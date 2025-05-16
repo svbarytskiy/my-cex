@@ -1,0 +1,61 @@
+.trading-page {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 12px;
+  height: 100vh;
+  padding: 16px;
+  background: var(--bg-color);
+  box-sizing: border-box;
+}
+
+.trading-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
+.chart-area {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 12px;
+  flex: 1;
+  min-height: 0; /* Фікс для Firefox */
+}
+
+.chart-container {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-book-container {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.order-list-container {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  height: 200px;
+}
+
+.trading-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .trading-page {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-area {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+}

@@ -1,0 +1,144 @@
+
+.order-book {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  font-size: 12px;
+}
+
+.order-book__header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-book__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.order-book__precision-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.order-book__precision-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.order-book__precision-btn.active {
+  background: var(--primary-accent);
+  color: #000;
+  border-color: var(--primary-accent);
+}
+
+.order-book__table {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.order-book__table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 6px 12px;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.order-book__table-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.order-book__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 4px 12px;
+  position: relative;
+}
+
+.order-book__row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.order-book__cell {
+  text-align: right;
+}
+
+.order-book__cell.price {
+  text-align: left;
+}
+
+.order-book__cell.bid {
+  color: var(--buy-color);
+}
+
+.order-book__cell.ask {
+  color: var(--sell-color);
+}
+
+.order-book__depth {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+.order-book__depth.bid {
+  background: var(--buy-color);
+}
+
+.order-book__depth.ask {
+  background: var(--sell-color);
+}
+
+.order-book__spread {
+  padding: 6px 12px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Hide scrollbar but keep functionality */
+.order-book__table-body::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+/* Адаптація для мобільних */
+@media (max-width: 768px) {
+  .trading-page {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 8px;
+  }
+  
+  .chart-area {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .order-book-container {
+    height: 300px;
+  }
+}

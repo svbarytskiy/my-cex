@@ -1,0 +1,35 @@
+/* Navbar.css */
+.navbar {
+    background-color: #1a1a1a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #facc15; /* золотисто-жовтий */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #facc15;
+}
