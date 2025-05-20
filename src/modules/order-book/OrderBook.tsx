@@ -2,26 +2,89 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './styles.css';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { fetchOrderBook, subscribeOrderBookWS, unsubscribeOrderBookWS } from '../../store/slices/orderBook/orderBookThunks';
+import { createSelector } from '@reduxjs/toolkit';
+import OrderBookRow from './components/OrderBookRow/OrderBookRow';
+import OrderRatio from './components/OrderRatio/OrderRatio';
+import SpreadDisplay from './components/SpreadDisplay/SpreadDisplay';
+import { OrderBookViewSwitcher } from './components/OrderBookViewSwitcher/OrderBookViewSwitcher';
+import { PriceAggregationSelector } from './components/PriceAggregationSelector/PriceAggregationSelector';
+import { fetchExchangeInfo } from '../../store/slices/exchangeInfo/exchangeInfoThunks';
 
 interface OrderBookProps {
   symbol?: string;
 }
+const selectOrderBook = (state: any) => state.orderBook;
+
+const selectOrderBookData = createSelector(
+  [selectOrderBook],
+  (orderBook) => {
+    const sortedBids = [...orderBook.bidsArray].sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
+    const sortedAsks = [...orderBook.asksArray].sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
+
+    return {
+      bids: sortedBids.slice(0, 8),
+      asks: sortedAsks.slice(0, 8),
+      spread: calculateSpread(sortedBids, sortedAsks),
+    };
+  }
+);
+
+const calculateSpread = (bids: any, asks: any) => {
+  const bestBid = bids[0]?.[0] || 0;
+  const bestAsk = asks[0]?.[0] || 0;
+  return {
+    value: (bestAsk - bestBid).toFixed(2),
+    percentage: ((bestAsk - bestBid) / bestBid * 100).toFixed(2)
+  };
+};
 
 const OrderBook: React.FC<OrderBookProps> = ({ symbol = 'BTCUSDT' }) => {
+  const price = useAppSelector((state: any) => state.ticker.price);
   const dispatch = useAppDispatch();
   const {
-    bids,
-    asks,
     loading,
     error,
-    isInitialized,
     wsConnected
   } = useAppSelector(state => state.orderBook);
 
-  const [precision, setPrecision] = useState<number>(0.1);
 
-  // Ініціалізація ордербука
+  const [precision, setPrecision] = useState<number>(0.01);
+  const data = useAppSelector((state) => state.exchangeInfo.data);
+  const symbolInfo = data?.symbols?.find(s => s.symbol === symbol);
+  const tickSize = symbolInfo?.filters?.find(f => f.filterType === 'PRICE_FILTER')?.tickSize;
+  const { bids, asks, spread } = useAppSelector(selectOrderBookData);
+
+  const processedBids = useMemo(() => {
+    let runningTotal = 0;
+    return bids.map(([price, quantity]) => {
+      runningTotal += parseFloat(quantity);
+      console.log('Running total:', [price, quantity], runningTotal);
+      return {
+        price,
+        quantity,
+        total: runningTotal.toFixed(6)
+      };
+    });
+  }, [bids]);
+
+  const processedAsks = useMemo(() => {
+    let runningTotal = 0;
+    return asks.map(([price, quantity]) => {
+      runningTotal += parseFloat(quantity);
+      return {
+        price,
+        quantity,
+        total: runningTotal.toFixed(6)
+      };
+    });
+  }, [asks]);
+
+  const displayedAsks = useMemo(() => {
+    return [...processedAsks].reverse();
+  }, [processedAsks]);
+
   useEffect(() => {
+    dispatch(fetchExchangeInfo(symbol));
     dispatch(subscribeOrderBookWS(symbol));
     dispatch(fetchOrderBook({ symbol }));
 
@@ -30,74 +93,18 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol = 'BTCUSDT' }) => {
     };
   }, [dispatch, symbol]);
 
-  // Групування та сортування даних
-  const { groupedBids, groupedAsks, maxTotal, spread } = useMemo(() => {
-    // Функція для групування по пресіжен
-    const groupByPrecision = (orders: [string, string][], isBid = true) => {
-      const grouped = new Map<number, any>();
+  const totalBidVolume = bids.reduce((acc, [_, quantity]) => acc + parseFloat(quantity), 0);
+  const totalAskVolume = asks.reduce((acc, [_, quantity]) => acc + parseFloat(quantity), 0);
 
-      orders.forEach(([priceStr, sizeStr]) => {
-        const price = parseFloat(priceStr);
-        const size = parseFloat(sizeStr);
-        const roundedPrice = Math.round(price / precision) * precision;
+  const totalVolume = totalBidVolume + totalAskVolume;
 
-        if (grouped.has(roundedPrice)) {
-          const existing = grouped.get(roundedPrice)!;
-          grouped.set(roundedPrice, {
-            price: roundedPrice,
-            size: existing.size + size,
-            total: existing.total + size
-          });
-        } else {
-          grouped.set(roundedPrice, {
-            price: roundedPrice,
-            size,
-            total: size
-          });
-        }
-      });
+  const buyPercentage = ((totalBidVolume / totalVolume) * 100).toFixed(1);
 
-      // Конвертуємо в масив і сортуємо
-      const result = Array.from(grouped.values());
-      result.sort((a, b) => isBid ? b.price - a.price : a.price - b.price);
-
-      // Розраховуємо накопичений total
-      let runningTotal = 0;
-      return result.map(order => {
-        runningTotal += order.size;
-        return { ...order, total: runningTotal };
-      });
-    };
-
-    const processedBids = groupByPrecision(bids, true);
-    const processedAsks = groupByPrecision(asks, false);
-
-    // Знаходимо максимальний total для відображення глибини
-    const maxBidTotal = processedBids.length > 0 ? processedBids[processedBids.length - 1].total : 0;
-    const maxAskTotal = processedAsks.length > 0 ? processedAsks[processedAsks.length - 1].total : 0;
-    const maxTotal = Math.max(maxBidTotal, maxAskTotal);
-
-    // Розраховуємо спред
-    const bestBid = processedBids[0]?.price || 0;
-    const bestAsk = processedAsks[0]?.price || 0;
-    const spreadValue = bestAsk - bestBid;
-    const spreadPercentage = (spreadValue / bestBid) * 100;
-
-    return {
-      groupedBids: processedBids,
-      groupedAsks: processedAsks,
-      maxTotal,
-      spread: {
-        value: spreadValue.toFixed(2),
-        percentage: spreadPercentage.toFixed(2)
-      }
-    };
-  }, [bids, asks, precision]);
-
-  if (loading && !isInitialized) {
-    return <div className="order-book loading">Loading order book...</div>;
-  }
-
+  const maxQuantity = useMemo(() => {
+    const maxBid = Math.max(...bids.map(([, quantity]) => parseFloat(quantity)));
+    const maxAsk = Math.max(...asks.map(([, quantity]) => parseFloat(quantity)));
+    return Math.max(maxBid, maxAsk);
+  }, [bids, asks]);
   if (error) {
     return <div className="order-book error">Error: {error}</div>;
   }
@@ -105,29 +112,9 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol = 'BTCUSDT' }) => {
   return (
     <div className="order-book">
       <div className="order-book__header">
-        <h3 className="order-book__title">Order Book - {symbol}</h3>
-        <div className="order-book__status">
-          {wsConnected ? '🟢 Connected' : '🔴 Disconnected'}
-        </div>
         <div className="order-book__precision-controls">
-          <button
-            className={`order-book__precision-btn ${precision === 0.01 ? 'active' : ''}`}
-            onClick={() => setPrecision(0.01)}
-          >
-            0.01
-          </button>
-          <button
-            className={`order-book__precision-btn ${precision === 0.1 ? 'active' : ''}`}
-            onClick={() => setPrecision(0.1)}
-          >
-            0.1
-          </button>
-          <button
-            className={`order-book__precision-btn ${precision === 1 ? 'active' : ''}`}
-            onClick={() => setPrecision(1)}
-          >
-            1
-          </button>
+          <OrderBookViewSwitcher />
+          <PriceAggregationSelector tickSize={0.01} onAggregationChange={(precision) => setPrecision(precision)} currentPair={symbol} />
         </div>
       </div>
 
@@ -139,37 +126,33 @@ const OrderBook: React.FC<OrderBookProps> = ({ symbol = 'BTCUSDT' }) => {
         </div>
 
         <div className="order-book__table-body">
-          {/* Asks - від найнижчої до найвищої ціни */}
-          {groupedAsks.slice(0, 8).map((order, index) => (
-            <div className="order-book__row ask" key={`ask-${order.price}`}>
-              <div className="order-book__cell price ask">{order.price.toFixed(2)}</div>
-              <div className="order-book__cell">{order.size.toFixed(4)}</div>
-              <div className="order-book__cell">{order.total.toFixed(4)}</div>
-              <div
-                className="order-book__depth ask"
-                style={{ width: `${(order.total / maxTotal) * 100}%` }}
-              />
-            </div>
+          {displayedAsks.map(({ price, quantity, total }) => (
+            <OrderBookRow
+              key={`ask-${price}-${quantity}`}
+              price={price}
+              quantity={quantity}
+              total={total}
+              type="ask"
+              maxQuantity={maxQuantity}
+            />
           ))}
 
-          {/* Спред */}
-          <div className="order-book__spread">
-            Spread: {spread.value} ({spread.percentage}%)
-          </div>
+          <SpreadDisplay price={price} spread={spread} />
 
-          {/* Bids - від найвищої до найнижчої ціни */}
-          {groupedBids.slice(0, 8).map((order, index) => (
-            <div className="order-book__row bid" key={`bid-${order.price}`}>
-              <div className="order-book__cell price bid">{order.price.toFixed(2)}</div>
-              <div className="order-book__cell">{order.size.toFixed(4)}</div>
-              <div className="order-book__cell">{order.total.toFixed(4)}</div>
-              <div
-                className="order-book__depth bid"
-                style={{ width: `${(order.total / maxTotal) * 100}%` }}
-              />
-            </div>
+          {processedBids.map(({ price, quantity, total }) => (
+            <OrderBookRow
+              key={`bid-${price}-${quantity}`}
+              price={price}
+              quantity={quantity}
+              total={total}
+              type="bid"
+              maxQuantity={maxQuantity}
+            />
           ))}
         </div>
+      </div>
+      <div className="order-book_footer">
+        <OrderRatio buyPercent={+buyPercentage} />
       </div>
     </div>
   );

@@ -91,7 +91,6 @@ export const useCHartsSetup = (mockCandlestickData: CustomCandleData[]) => {
     }, []);
 
     const updateCandle = useCallback((data: CustomCandleData) => {
-        console.log('Received data for update:', data); // Додайте цей рядок для діагностики
         if (!data || typeof data.time === 'undefined') { // Додаткова перевірка
             console.error('Invalid data passed to updateCandle:', data);
             return;

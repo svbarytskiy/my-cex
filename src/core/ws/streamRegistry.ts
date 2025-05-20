@@ -59,8 +59,7 @@ export const streamRegistry = {
                 bids: msg.b,
                 asks: msg.a,
             };
-        },
-        reducerAction: ({ key, data }: { key: string; data: OrderBook }) => wsOrderBookUpdate({ key, data }),
+        }
     } as StreamHandler<OrderBook>,
 };
 
@@ -84,8 +83,6 @@ export function registerStream<T>(
 
     const handler = streamRegistry[type];
     const key = handler.key(symbol, params?.interval);
-    console.log("Key ", key)
-    console.log("streamName ", streamName)
     return {
         stream: streamName,
         onMessage: (data: any) => {

@@ -1,10 +1,10 @@
 import './App.css';
 import { Layout } from './common/components/layout/Layout';
-import { OrderBook } from './modules/order-book/OrderBook';
 import { MarketInfo } from './modules/market-info/MarketInfo';
 import { TradePanel } from './modules/trade-panel/TradePanel';
 import { OrderList } from './modules/order-list/OrderList';
 import { TradingView } from './modules/trading-view/TradingView';
+import { MobileTradingLayout } from './modules/mobile-layout/MobileLayout';
 
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
             </div>
             
             <div className="order-book-container">
-              <OrderBook />
+              <MobileTradingLayout />
             </div>
           </div>
           

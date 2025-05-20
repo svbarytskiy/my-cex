@@ -1,0 +1,13 @@
+.order-book__spread {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 12px;
+}
+
+.spread-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

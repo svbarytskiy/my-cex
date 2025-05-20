@@ -1,0 +1,45 @@
+.order-book__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  padding: 4px 12px;
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  column-gap: 8px;
+  cursor: pointer;
+  /* відступ між price і рештою */
+}
+
+.order-book__row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.order-book__fill {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  border-radius: 2px;
+  pointer-events: none;
+  transition: width 0.2s ease;
+}
+
+.order-book__cell {
+  text-align: right;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.order-book__cell.price {
+  text-align: left;
+}
+
+.order-book__cell.bid {
+  color: var(--buy-color, #25a750);
+}
+
+.order-book__cell.ask {
+  color: var(--sell-color, #ca3f64);
+}

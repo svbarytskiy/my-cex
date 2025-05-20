@@ -1,65 +1,84 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axiosInstance from '../../../http/axios';
+import { RootState, store } from '../../store';
+import { wsTradeClient } from '../../../core/ws/WebSocketClient';
+import { registerStream } from '../../../core/ws/streamRegistry';
 import {
-    OrderBook,
-    FetchOrderBookResponse,
-    FetchOrderBookParams,
-} from "./types";
-// import { markWsSubscribed } from "./orderBookSlice";
-import axiosInstance from "../../../http/axios";
-import { wsTradeClient } from "../../../core/ws/WebSocketClient";
-import { registerStream } from "../../../core/ws/streamRegistry";
+    updateOrderBook,
+    setWsConnected,
+    setError,
+} from './orderBookSlice';
+import type { SnapshotPayload, DepthEvent } from './types';
+
+// Ініціалізація воркера
+const worker = new Worker(
+    new URL('../../../workers/orderbook.worker.ts', import.meta.url),
+    { type: 'module' }
+);
+
+// Обробка повідомлень від воркера
+worker.onmessage = ({ data }) => {
+    if (data.type === 'UPDATE') {
+        store.dispatch(updateOrderBook(data.payload));
+    } else if (data.type === 'RESYNC') {
+        // автоматичний ресинк
+        if (currentSymbol) {
+            store.dispatch(fetchOrderBook({ symbol: currentSymbol }));
+        }
+    }
+};
+
+let currentSymbol: string | null = null;
 
 export const fetchOrderBook = createAsyncThunk<
-    FetchOrderBookResponse,
-    FetchOrderBookParams
->("orderbook/fetch", async ({ symbol }) => {
-    const { data } = await axiosInstance.get(`/depth`, {
-        params: { symbol: symbol.toUpperCase(), limit: 100 },
-    });
-
-    return {
-        key: symbol.toUpperCase(),
-        lastUpdateId: data.lastUpdateId,
-        bids: data.bids,
-        asks: data.asks,
-    };
-});
-
-
-// export const initializeOrderBook = createAsyncThunk<
-//     void,
-//     string,
-//     { state: RootState }
-// >("orderBook/initialize", async (symbol, { dispatch }) => {
-//     try {
-//          // Підключаємося до WebSocket
-//         await dispatch(subscribeOrderBookWS(symbol));
-//         // Спочатку отримуємо снепшот
-//         await dispatch(fetchOrderBook(symbol)).unwrap();
-
-
-
-//     } catch (error) {
-//         console.error("Initialization failed:", error);
-//         throw error;
-//     }
-// });
-
-export const subscribeOrderBookWS = createAsyncThunk<
-    void,
-    string,
+    SnapshotPayload & { symbol: string },
+    { symbol: string },
     { state: RootState }
->("orderbook/subscribe", async (symbol, { dispatch }) => {
-    const { stream, onMessage } = registerStream<'depth'>("depth", symbol, { delay: '1000ms' });
-    wsTradeClient.subscribe(stream, onMessage);
-});
+>(
+    'orderbook/fetch',
+    async ({ symbol }, { dispatch }) => {
+        currentSymbol = symbol.toUpperCase();
+        const { data } = await axiosInstance.get('/depth', {
+            params: { symbol: currentSymbol, limit: 1000 },
+        });
+        const payload: SnapshotPayload = {
+            lastUpdateId: data.lastUpdateId,
+            bids: data.bids,
+            asks: data.asks,
+        };
+        // шлемо snapshot у воркер
+        worker.postMessage({ type: 'SNAPSHOT', payload });
+        return { ...payload, symbol: currentSymbol };
+    }
+);
 
+export const subscribeOrderBookWS = createAsyncThunk<void, string>(
+    'orderbook/subscribe',
+    async (symbol, { dispatch }) => {
+        dispatch(setWsConnected(true));
+        currentSymbol = symbol.toUpperCase();
 
-export const unsubscribeOrderBookWS = createAsyncThunk(
-    "orderbook/unsubscribe",
-    async (symbol: string) => {
-        const stream = `${symbol.toLowerCase()}@depth`;
+        const streamName = `${symbol.toLowerCase()}@depth@1000ms`;
+        wsTradeClient.subscribe(streamName, (msg: any) => {
+            // ручний парсинг
+            if (msg.e === 'depthUpdate' && msg.b && msg.a) {
+                const event: DepthEvent = {
+                    U: msg.U,
+                    u: msg.u,
+                    b: msg.b,
+                    a: msg.a,
+                };
+                worker.postMessage({ type: 'WS_EVENT', payload: event });
+            }
+        });
+    }
+);
+
+export const unsubscribeOrderBookWS = createAsyncThunk<void, string>(
+    'orderbook/unsubscribe',
+    async (symbol) => {
+        const stream = `${symbol.toLowerCase()}@depth@1000ms`;
         wsTradeClient.unsubscribe(stream);
+        store.dispatch(setWsConnected(false));
     }
 );

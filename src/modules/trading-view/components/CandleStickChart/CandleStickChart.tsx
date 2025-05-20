@@ -126,7 +126,6 @@ const CandleStickChart: FC<CandleStickChartProps> = ({ candles, streamingData })
   let { chartContainerRef, updateCandle } = useCHartsSetup(candles);
 
   useEffect(() => {
-    console.log("streamingData", streamingData);
     updateCandle(streamingData)
   }, [streamingData]);
 

@@ -1,4 +1,3 @@
-
 .order-book {
   display: flex;
   flex-direction: column;
@@ -22,8 +21,10 @@
 }
 
 .order-book__precision-controls {
+  width: 100%;
   display: flex;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .order-book__precision-btn {
@@ -66,33 +67,6 @@
   overflow-y: auto;
 }
 
-.order-book__row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 4px 12px;
-  position: relative;
-}
-
-.order-book__row:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.order-book__cell {
-  text-align: right;
-}
-
-.order-book__cell.price {
-  text-align: left;
-}
-
-.order-book__cell.bid {
-  color: var(--buy-color);
-}
-
-.order-book__cell.ask {
-  color: var(--sell-color);
-}
-
 .order-book__depth {
   position: absolute;
   top: 0;
@@ -125,6 +99,13 @@
   background: transparent;
 }
 
+.order-book_footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
 /* Адаптація для мобільних */
 @media (max-width: 768px) {
   .trading-page {
@@ -132,7 +113,7 @@
     height: auto;
     padding: 8px;
   }
-  
+
   .chart-area {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
