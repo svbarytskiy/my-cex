@@ -1,0 +1,29 @@
+/* BidsOnlyOrderBook.css */
+.bids-container {
+  position: relative;
+  max-height: 465px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bids-list {
+  flex: 1;
+
+  overflow-y: auto;
+  will-change: transform;
+  direction: ltr;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.position-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  font-size: 0;
+  z-index: 3;
+  pointer-events: none;
+  outline: 0.5px dashed #ffffff;
+}

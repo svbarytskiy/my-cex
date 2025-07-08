@@ -1,43 +1,49 @@
 .trading-page {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 12px;
+  grid-template-columns: 1fr; /* Одна колонка для всієї сторінки */
+  grid-template-rows: auto 1fr; /* Перший рядок для MarketInfo (auto), другий для всього іншого (1fr) */
+  gap: 8px; /* Відстань між рядками (MarketInfo та іншим контентом) */
+  margin-top: 8px;
   height: 100vh;
-  padding: 16px;
-  background: var(--bg-color);
   box-sizing: border-box;
+}
+
+/* Новий клас для обгортки основного контенту під MarketInfo */
+.trading-content-wrapper {
+  display: grid; /* Вмикаємо Grid для цієї обгортки */
+  grid-template-columns: 1fr 300px; /* Відтворюємо оригінальну сітку: trading-main (ліворуч) і trading-sidebar (праворуч) */
+  gap: 8px; /* Відстань між trading-main та trading-sidebar */
+  height: 100%; /* Забезпечуємо, що він займе всю доступну висоту у своєму батьківському 1fr рядку */
 }
 
 .trading-main {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  height: 100%;
+  gap: 8px;
+  height: 100%; /* Займаємо всю доступну висоту всередині trading-content-wrapper */
 }
 
 .chart-area {
   display: grid;
   grid-template-columns: 1fr 320px;
-  gap: 12px;
-  flex: 1;
-  min-height: 0; /* Фікс для Firefox */
+  gap: 8px;
+  flex: 1; /* Дозволяє Chart Area займати доступний простір у trading-main */
+  min-height: 0;
 }
 
 .chart-container {
-  background: var(--panel-bg);
+  background: var(--background-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
   overflow: hidden;
 }
 
 .order-book-container {
-  background: var(--panel-bg);
+  background: var(--background-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
 }
 
 .order-list-container {
-  background: var(--panel-bg);
+  background: var(--background-secondary);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   height: 200px;
@@ -47,13 +53,23 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background: var(--background-secondary);
 }
 
+/* Адаптивність для мобільних пристроїв */
 @media (max-width: 768px) {
   .trading-page {
-    grid-template-columns: 1fr;
+    /* На мобільних пристроях, можливо, потрібно переглянути grid-template-rows,
+       якщо ви хочете змінити порядок або розмір елементів.
+       Поки що залишаємо як є, оскільки це стосується лише основного grid-контейнера. */
   }
-  
+
+  .trading-content-wrapper {
+    grid-template-columns: 1fr; /* На мобільних - один стовпець */
+    /* Додаємо рядок для бічної панелі під основним контентом */
+    grid-template-rows: auto auto; /* Основний контент, потім сайдбар */
+  }
+
   .chart-area {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;

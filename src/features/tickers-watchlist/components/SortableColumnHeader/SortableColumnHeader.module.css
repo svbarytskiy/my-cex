@@ -1,0 +1,38 @@
+.headerColumn {
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  padding-right: 2px;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.columnLabel {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.activeSort .columnLabel {
+  color: var(--text-primary, #ffffff);
+}
+
+.sortable:hover .columnLabel,
+.sortable:hover [data-comp='SortDirectionIcon'] .sortIconSvg path {
+  color: var(--text-primary, #ffffff);
+  opacity: 1;
+}

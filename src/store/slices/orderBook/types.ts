@@ -1,48 +1,48 @@
 export interface FetchOrderBookParams {
-    symbol: string;
+  symbol: string
 }
 
 export interface FetchOrderBookResponse {
-    key: string;
-    lastUpdateId: number;
-    bids: [string, string][];
-    asks: [string, string][];
+  key: string
+  lastUpdateId: number
+  bids: [string, string][]
+  asks: [string, string][]
 }
 
 export interface OrderBook {
-    lastUpdateId: number;
-    firstUpdateId: number;
-    bids: [string, string][];
-    asks: [string, string][];
+  lastUpdateId: number
+  firstUpdateId: number
+  bids: [string, string][]
+  asks: [string, string][]
 }
 
 export interface OrderBookState {
-    symbol?: string;
-    lastUpdateId: number;
-    bidsMap: Record<string, string>;
-    asksMap: Record<string, string>;
-    bidsArray: [string, string][];
-    asksArray: [string, string][];
-    bufferedEvents: OrderBook[];
-    isInitialized: boolean;
-    loading: boolean;
-    error: string | null;
-    wsConnected: boolean;
+  symbol?: string
+  lastUpdateId: number
+  bidsMap: Record<string, string>
+  asksMap: Record<string, string>
+  bidsArray: [string, string][]
+  asksArray: [string, string][]
+  bufferedEvents: OrderBook[]
+  isInitialized: boolean
+  loading: boolean
+  error: string | null
+  wsConnected: boolean
 }
 
 // store/slices/orderBook/types.ts
 
-export type OrderBookLevel = [string, string];
+export type OrderBookLevel = [string, string]
 
 export interface SnapshotPayload {
-  lastUpdateId: number;
-  bids: OrderBookLevel[];
-  asks: OrderBookLevel[];
+  lastUpdateId: number
+  bids: OrderBookLevel[]
+  asks: OrderBookLevel[]
 }
 
 export interface DepthEvent {
-  U: number;
-  u: number;
-  b: OrderBookLevel[];
-  a: OrderBookLevel[];
+  U: number
+  u: number
+  b: OrderBookLevel[]
+  a: OrderBookLevel[]
 }

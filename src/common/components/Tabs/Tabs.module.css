@@ -1,14 +1,11 @@
-/* src/shared/ui/tabs/ui/Tabs.module.css */
 .tabsContainer {
   font-family: 'Inter', sans-serif;
-  background: #1c1c28;
-  border-radius: 8px;
-  overflow: hidden;
+  background: var(--background-secondary);
 }
 
 .tabsHeader {
   display: flex;
-  border-bottom: 1px solid #2d2d3d;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tabButton {
@@ -29,7 +26,8 @@
 }
 
 .tabButton.active {
-  color: #f0b90b; /* Bybit-стиль (жовтий) */
+  color: var(--accent-primary);
+  font-weight: 600;
 }
 
 .tabButton.active::after {
@@ -39,7 +37,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: #f0b90b;
+  background: var(--accent-primary);
 }
 
 /* .tabsContent {

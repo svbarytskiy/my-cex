@@ -1,0 +1,23 @@
+/* components/HorizontalScrollContainer/HorizontalScrollContainer.module.css */
+.scrollContainerWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Приховує скролбар для wrapper */
+  box-sizing: border-box;
+}
+
+.scrollContent {
+  display: flex; /* Важливо: розміщує дочірні елементи в рядок */
+  overflow-x: auto; /* Дозволяє горизонтальний скрол */
+  -webkit-overflow-scrolling: touch; /* Покращує скрол на iOS */
+  scrollbar-width: none; /* Приховує скролбар для Firefox */
+  -ms-overflow-style: none; /* Приховує скролбар для IE/Edge */
+  /* padding-right: 16px; /* Додайте, якщо потрібен відступ після останнього елемента */
+  /* gap: 16px; /* Якщо ви хочете використовувати CSS gap між елементами,
+               переконайтеся, що ваші дочірні елементи не мають власних margin-right */
+}
+
+/* Приховуємо скролбар для Webkit-браузерів (Chrome, Safari) */
+.scrollContent::-webkit-scrollbar {
+  display: none;
+}

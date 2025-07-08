@@ -1,0 +1,16 @@
+.mainTabsSection {
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.subTabsSection {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 16px;
+}
+
+.tableHeaderSection {
+
+}
+

@@ -1,36 +1,120 @@
+/* =========================================================
+   Базові змінні (за замовчуванням - Темна Тема та Fresh Кольори Свічок)
+   Кольори, що імітують дизайн Binance
+   ========================================================= */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --panel-bg: #1e1e1e;
-  --border-color: #2a2a2a;
-  --text-primary: #f0f0f0;
-  --text-secondary: #a0a0a0;
-  --btn-bg: #2a2a2a;
-  --input-bg: #252525;
-  --primary-color: #3a7bd5;
-  --buy-color: #00b42a;
-  --sell-color: #ff4d4f;
-  --bg-color: #0e0e11;
-  --panel-bg: #1e1e23;
-  --border-color: #2a2a32;
-  --text-color: #eaecef;
-  --text-secondary: #848e9c;
-  --buy-color: #0ecb81;
-  --sell-color: #f6465d;
-  --primary-accent: #f0b90b;
+  /* --- Загальні кольори фону та тексту --- */
+  --background-primary: #12161a; /* Найтемніший основний фон */
+  --background-secondary: #1e2329; /* Трохи світліший фон для карток, блоків */
+  --background-tertiary: #2b3139; /* Ще світліший фон для певних секцій/елементів */
+  --background-tertiary-hover: #363c45; /* Світліший фон для tertiary при наведенні (НОВИЙ) */
+  --text-primary: #eaecee; /* Світло-сірий для основного тексту */
+  --text-secondary: #848e9c; /* Середньо-сірий для додаткової інформації */
+  --border-color: #363c45; /* Темний сірий для бордюрів та роздільників */
+  --shadow-color: rgba(0, 0, 0, 0.6); /* Більш виражена тінь для темної теми */
+
+  /* --- Кольори заголовків та навігації --- */
+  --header-background: #1e2329; /* Фон заголовка/шапки (співпадає з background-secondary) */
+  --header-text: #eaecee; /* Текст заголовка/шапки */
+
+  /* --- Кольори кнопок --- */
+  --button-primary-background: #f0b90b; /* Binance Yellow */
+  --button-primary-text: #1e2329; /* Темний текст для жовтої кнопки */
+  --button-secondary-background: #474d57; /* Темно-сірий для другорядної кнопки */
+  --button-secondary-text: #eaecee; /* Світлий текст для другорядної кнопки */
+  --button-secondary-hover-background: #5a626f; /* Трохи світліший сірий при наведенні */
+
+  /* --- Акцентні кольори --- */
+  --accent-primary: #f0b90b; /* Основний акцентний колір (Binance Yellow) */
+  --link-color: #f0b90b; /* Посилання можуть бути жовтими */
+  --text-success: #0ecb81; /* Колір для успішних операцій/позитивних показників */
+  --text-danger: #f6465d; /* Колір для помилок/негативних показників */
+
+  /* --- Кольори для графіків (свічки, ціни) - Fresh схема (за замовчуванням) --- */
+  --candle-up: #0ecb81; /* Зелений для зростання (Binance Green) */
+  --candle-down: #f6465d; /* Червоний для падіння (Binance Red) */
+  --price-up: #0ecb81; /* Колір зростаючої ціни */
+  --price-down: #f6465d; /* Колір падаючої ціни */
+}
+
+/* =========================================================
+   Світла Тема
+   Застосовується до <body> або <html> за допомогою класу .light-theme
+   Кольори, що імітують дизайн Binance Light
+   ========================================================= */
+.light-theme {
+  /* --- Загальні кольори фону та тексту --- */
+  --background-primary: #ffffff; /* Чистий білий */
+  --background-secondary: #f5f5f5; /* Легкий сірий для карток/блоків */
+  --background-tertiary: #ebebeb; /* Ще світліший фон для певних секцій/елементів */
+  --background-tertiary-hover: #e0e0e0; /* Світліший фон для tertiary при наведенні (НОВИЙ) */
+  --text-primary: #1e2329; /* Темний текст */
+  --text-secondary: #707a8a; /* Середньо-сірий для додаткової інформації */
+  --border-color: #eaecef; /* Дуже світлий сірий для бордюрів */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Легка тінь для світлої теми */
+
+  /* --- Кольори заголовків та навігації --- */
+  --header-background: #ffffff;
+  --header-text: #1e2329;
+
+  /* --- Кольори кнопок --- */
+  --button-primary-background: #f0b90b;
+  --button-primary-text: #ffffff;
+  --button-secondary-background: #e9ecef; /* Світло-сірий для другорядної кнопки */
+  --button-secondary-text: #474d57; /* Темний текст для другорядної кнопки */
+  --button-secondary-hover-background: #dee2e6; /* Трохи світліший сірий при наведенні */
+
+  /* --- Акцентні кольори --- */
+  --accent-primary: #f0b90b;
+  --link-color: #f0b90b; /* Посилання також можуть бути жовтими */
+  --text-success: #0ecb81;
+  --text-danger: #f6465d;
+}
+
+/* =========================================================
+   Схеми кольорів для графіків (свічки, ціни)
+   Застосовуються до <body> або контейнера графіків
+   ========================================================= */
+
+/* Традиційна схема (Вже відповідає Binance Green/Red, можна залишити, або налаштувати, якщо потрібно ще темніші/світліші) */
+/*
+.color-scheme-traditional {
+  --candle-up: #0ecb81;
+  --candle-down: #f6465d;
+  --price-up: #0ecb81;
+  --price-down: #f6465d;
+}
+*/
+/* Якщо Fresh вже відповідає Traditional, можна не дублювати Traditional, або зробити її трохи іншою */
+
+/* Схема для людей з порушеннями колірного зору (Color Vision Deficiency - CVD) */
+.color-scheme-cvd {
+  --candle-up: #007bff; /* Яскравий синій */
+  --candle-down: #ffa500; /* Помаранчевий */
+  --price-up: #007bff;
+  --price-down: #ffa500;
 }
 
 /* Фіксуємо кореневі елементи */
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  background-color: var(--background-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Додаткові переходи для елементів, які змінюють колір */
+body * {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }

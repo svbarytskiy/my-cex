@@ -1,0 +1,13 @@
+/* components/MarketInfo/MarketInfo.module.css */
+.marketInfoContainer {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  padding: 5px 16px;
+}
+
+.marketInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Загальний відступ між секціями */
+  flex-wrap: wrap; /* Дозволяє переносити на новий рядок на малих екранах */
+}

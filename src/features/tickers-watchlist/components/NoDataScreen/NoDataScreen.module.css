@@ -1,0 +1,19 @@
+.noDataContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 130px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.noDataText {
+  font-size: 1.1em;
+  font-weight: 500;
+  line-height: 1.4;
+}

@@ -1,0 +1,25 @@
+.statsContainer {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.changeValue {
+  display: flex;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  align-items: center;
+}
+
+.quoteChange {
+  margin-right: 5px;
+}
+
+.positive {
+  color: #0ecb81;
+}
+
+.negative {
+  color: #ff4d4f;
+}

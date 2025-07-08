@@ -1,0 +1,17 @@
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.mainPrice {
+  box-sizing: border-box;
+}
+
+.usdPrice {
+  color: white;
+  font-size: 12px;
+  margin-top: 2px;
+}

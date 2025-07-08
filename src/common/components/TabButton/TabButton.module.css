@@ -1,0 +1,43 @@
+.tabButton {
+  flex-shrink: 0;
+  padding: 8px 0;
+  margin-right: 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--tab-text-color, #ccc);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.tabButton:last-child {
+  margin-right: 0;
+}
+
+.tabButton:hover {
+  color: var(--tab-text-hover-color, #fff);
+}
+
+.active {
+  color: #fff;
+  border-bottom-color: var(--tab-active-border-color, #f0b90b);
+}
+.active:hover {
+  color: #fff;
+  border-bottom-color: var(--tab-active-border-color, #f0b90b);
+}
+
+:root {
+  --tab-text-color: #ccc;
+  --tab-text-hover-color: #fff;
+  --tab-active-text-color: #f0b90b;
+  --tab-active-border-color: #f0b90b;
+  --tab-active-bg: rgba(240, 185, 11, 0.1);
+}

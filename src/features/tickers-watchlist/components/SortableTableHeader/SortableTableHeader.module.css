@@ -1,0 +1,19 @@
+.tableHeaderContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: var(--text-tertiary, #999999);
+  font-size: 12px;
+  background-color: var(--header-bg, transparent);
+  height: 30px;
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+
+:root {
+  --text-tertiary: #999999;
+  --text-primary: #ffffff;
+  --icon-normal: #888888;
+  --header-bg: transparent;
+  --border-color: #333;
+}

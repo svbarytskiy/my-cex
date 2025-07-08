@@ -1,0 +1,68 @@
+.container {
+  position: relative;
+  width: 80px;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background: var(--background-tertiary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 18px;
+  border: 1px solid transparent;
+}
+
+.selector:hover {
+  background: var(--background-tertiary-hover);
+}
+
+.selectedValue {
+  font-size: 12px;
+  font-weight: 500;
+  color: #eaecef;
+}
+
+.arrow {
+  transition: transform 0.2s;
+  color: #81858c;
+}
+
+.arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--background-tertiary);
+  border-radius: 4px;
+  margin-top: 4px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.option {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #eaecef;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.option:hover {
+  background: var(--background-tertiary-hover);
+}
+
+.option.active {
+  color: var(--accent-primary);
+  background: rgba(240, 185, 11, 0.1);
+}

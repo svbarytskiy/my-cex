@@ -1,0 +1,10 @@
+.columnHeader {
+  display: flex;
+  flex: 5 1 0px;
+  min-width: 60px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}

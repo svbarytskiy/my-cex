@@ -1,10 +1,10 @@
-import { persistReducer } from 'redux-persist';
-import { IndexedDBStorage } from 'redux-persist-indexeddb-storage';
-import { rootReducer } from './rootReducer';
+import { persistReducer } from 'redux-persist'
+import { IndexedDBStorage } from 'redux-persist-indexeddb-storage'
+import { rootReducer } from './rootReducer'
 
 declare module 'redux-persist' {
   interface PersistConfig {
-    serializableCheck?: boolean;
+    serializableCheck?: boolean
   }
 }
 
@@ -15,12 +15,12 @@ export const persistConfig = {
     keyPath: 'id',
     indexes: [
       { name: 'bySymbol', keyPath: 'symbol' },
-      { name: 'byTime', keyPath: 'time' }
+      { name: 'byTime', keyPath: 'time' },
     ],
   }),
   whitelist: ['historical'],
   serialize: false,
   timeout: 10000,
-};
+}
 
-export const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const persistedReducer = persistReducer(persistConfig, rootReducer)
