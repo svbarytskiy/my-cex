@@ -1,2 +1,1 @@
-import { TradingView } from './TradingView'
-export { TradingView }
+export { TradingView } from './trading-view'

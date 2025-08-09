@@ -7,7 +7,7 @@ import {
   CandlestickSeries,
   HistogramSeries,
   CrosshairMode,
-  LineStyle,
+  CandlestickData,
 } from 'lightweight-charts'
 import { useRef, useEffect, useCallback } from 'react'
 import { CustomCandleData } from '../components/CandleStickChart/CandleStickChart'
@@ -23,54 +23,54 @@ export const useCHartsSetup = (mockCandlestickData: CustomCandleData[]) => {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: '#1e1e1e' },
-        textColor: '#d1d4dc',
+        background: { type: ColorType.Solid, color: '#181a20' },
+        textColor: '#848e9c',
         panes: {
-          separatorColor: '#363C6E',
-          separatorHoverColor: '#485f7b',
+          separatorColor: '#363c45',
+          separatorHoverColor: '#363c49',
           enableResize: true,
         },
       },
       grid: {
-        vertLines: { color: '#2B2B43' },
-        horzLines: { color: '#363C4E' },
+        vertLines: { color: '#363c45' },
+        horzLines: { color: '#363c45' },
       },
       rightPriceScale: {
-        borderColor: '#485c7b',
+        borderColor: '#363c45',
       },
       timeScale: {
-        borderColor: '#485c7b',
+        borderColor: '#363c45',
         timeVisible: true,
         rightOffset: 15,
       },
       width: chartContainerRef.current.clientWidth,
-      height: 500,
+      height: chartContainerRef.current.clientHeight,
       crosshair: {
         vertLine: {
           visible: true,
-          color: '#666',
+          color: '#848e9c',
           width: 1,
-          labelBackgroundColor: '#999',
+          labelBackgroundColor: '#2b3139',
         },
         horzLine: {
           visible: true,
           labelVisible: true,
-          color: '#666',
-          labelBackgroundColor: '#999',
+          color: '#848e9c',
+          labelBackgroundColor: '#2b3139',
         },
         mode: CrosshairMode.Normal,
       },
     })
 
     const seriesOptions: CandlestickSeriesPartialOptions = {
-      upColor: '#4dbd74',
-      downColor: '#f86c6b',
+      upColor: '#0ecb81',
+      downColor: '#f6465d',
       borderVisible: true,
       wickVisible: true,
-      borderUpColor: '#4dbd74',
-      borderDownColor: '#f86c6b',
-      wickUpColor: '#666',
-      wickDownColor: '#666',
+      borderUpColor: '#0ecb81',
+      borderDownColor: '#f6465d',
+      wickUpColor: '#0ecb81',
+      wickDownColor: '#f6465d',
     }
     const volumeSeries = chart.addSeries(
       HistogramSeries,
@@ -81,7 +81,7 @@ export const useCHartsSetup = (mockCandlestickData: CustomCandleData[]) => {
       mockCandlestickData.map(item => ({
         time: item.time,
         value: item.volume,
-        color: item.close >= item.open ? '#4dbd74' : '#f86c6b',
+        color: item.close >= item.open ? '#0ecb81' : '#f6465d',
       })),
     )
     const candleSeries = chart.addSeries(CandlestickSeries, seriesOptions)
@@ -136,11 +136,11 @@ export const useCHartsSetup = (mockCandlestickData: CustomCandleData[]) => {
       high: data.high,
       low: data.low,
       close: data.close,
-    })
+    } as CandlestickData)
     volumeSeriesRef.current.update({
       time: data.time,
       value: data.volume,
-      color: data.close >= data.open ? '#4dbd74' : '#f86c6b',
+      color: data.close >= data.open ? '#0ecb81' : '#f6465d',
     })
   }, [])
 

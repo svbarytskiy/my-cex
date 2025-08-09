@@ -4,7 +4,7 @@ interface ClickAwayListenerProps {
   onOutsideClick: () => void
   children: ReactNode
   isOpen?: boolean
-  triggerRef?: RefObject<HTMLButtonElement | null>
+  triggerRef?: RefObject<HTMLElement | null>
 }
 
 const ClickAwayListener: FC<ClickAwayListenerProps> = ({
@@ -13,10 +13,13 @@ const ClickAwayListener: FC<ClickAwayListenerProps> = ({
   isOpen,
   triggerRef,
 }) => {
-  if (!isOpen) return null
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
       const clickedElement = event.target as Node
       if (
@@ -33,7 +36,9 @@ const ClickAwayListener: FC<ClickAwayListenerProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [onOutsideClick, triggerRef])
+  }, [onOutsideClick, triggerRef, isOpen])
+
+  if (!isOpen) return null
   return <div ref={wrapperRef}>{children}</div>
 }
 export { ClickAwayListener }

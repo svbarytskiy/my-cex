@@ -1,19 +1,27 @@
 import { FC, ReactNode } from 'react'
-import styles from './StatItem.module.css'
+import clsx from 'clsx'
 
 interface StatItemProps {
   label: string
   value: string | number | ReactNode
+  className?: string
 }
 
-const StatItem: FC<StatItemProps> = ({ label, value }) => {
+const StatItem: FC<StatItemProps> = ({ label, value, className }) => {
   return (
-    <>
-      <div className={styles.marketInfo__stat}>
-        <div className={styles.statLabel}>{label}</div>
-        <div className={styles.statValue}>{value}</div>
+    <div
+      className={clsx(
+        'flex md:gap-2 flex-col lg:pr-2 flex-none min-w-[50px]',
+        className,
+      )}
+    >
+      <div className="text-[10px] whitespace-nowrap leading-[16px] md:text-xs md:leading-tight text-text-secondary">
+        {label}
       </div>
-    </>
+      <div className="text-xs whitespace-nowrap leading-[16px] md:text-xs md:leading-tight text-text-primary">
+        {value}
+      </div>
+    </div>
   )
 }
 

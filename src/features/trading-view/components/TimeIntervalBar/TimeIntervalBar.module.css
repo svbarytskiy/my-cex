@@ -1,9 +1,7 @@
-/* src/modules/trading-view/components/TimeIntervalBar/TimeIntervalBar.module.css */
 .self_tool_time_intervals {
     display: flex;
     align-items: center;
     background: var(--bg-color-secondary);
-    border-radius: 4px;
     padding: 4px;
     height: 32px;
     box-sizing: border-box;

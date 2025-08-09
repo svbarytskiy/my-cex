@@ -1,65 +1,62 @@
-import React from 'react'
-import './styles.css'
+import { FC } from "react"
 
 interface OrderRatioProps {
   buyPercent: number
   sellPercent?: number
-  buyLabel?: string
-  sellLabel?: string
-  buyColor?: string
-  sellColor?: string
 }
 
-const OrderRatio: React.FC<OrderRatioProps> = ({
+export const OrderRatio: FC<OrderRatioProps> = ({
   buyPercent,
   sellPercent = 100 - buyPercent,
-  buyLabel = 'B',
-  sellLabel = 'S',
-  buyColor = '#25a750',
-  sellColor = '#ca3f64',
 }) => {
   const validatedBuy = Math.min(100, Math.max(0, buyPercent))
+  const finalSellPercent = sellPercent
+
+  const buyLabel = 'B'
+  const sellLabel = 'S'
+  const buyColorClass = 'text-price-up'
+  const sellColorClass = 'text-price-down'
+  const buyBorderColorClass = 'border-price-up'
+  const sellBorderColorClass = 'border-price-down'
+  const buyBgClass = 'bg-price-up/10'
+  const sellBgClass = 'bg-price-down/10'
 
   return (
-    <div className="order-ratio-wrapper">
+    <div className="flex w-full h-6 relative rounded-md box-border">
       <div
-        className="order-ratio-segment buy"
+        className={`flex items-center relative h-full overflow-hidden ${buyBgClass}`}
         style={
           {
             width: `${validatedBuy}%`,
             minWidth: '80px',
-            backgroundColor: `${buyColor}33`,
-            '--main-color': buyColor,
+            clipPath: 'polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0% 100%)',
           } as React.CSSProperties
         }
       >
-        <div className="order-ratio-content">
+        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-medium">
           <span
-            className="order-ratio-badge"
-            style={{ borderColor: buyColor, color: buyColor }}
+            className={`box-border w-6 h-6 border-2 rounded flex items-center justify-center ${buyBorderColorClass} ${buyColorClass}`}
           >
             {buyLabel}
           </span>
-          <span style={{ color: buyColor }}>{validatedBuy.toFixed(2)}%</span>
+          <span className={buyColorClass}>{validatedBuy.toFixed(2)}%</span>
         </div>
       </div>
 
       <div
-        className="order-ratio-segment sell"
+        className={`flex items-center justify-end relative h-full overflow-hidden ${sellBgClass}`}
         style={
           {
-            width: `${sellPercent}%`,
+            width: `${finalSellPercent}%`,
             minWidth: '80px',
-            backgroundColor: `${sellColor}33`,
-            '--main-color': sellColor,
+            clipPath: 'polygon(6px 0, 100% 0, 100% 100%, 0% 100%)',
           } as React.CSSProperties
         }
       >
-        <div className="order-ratio-content">
-          <span style={{ color: sellColor }}>{sellPercent.toFixed(2)}%</span>
+        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-medium">
+          <span className={sellColorClass}>{finalSellPercent.toFixed(2)}%</span>
           <span
-            className="order-ratio-badge"
-            style={{ borderColor: sellColor, color: sellColor }}
+            className={`box-border w-6 h-6 border-2 rounded flex items-center justify-center ${sellBorderColorClass} ${sellColorClass}`}
           >
             {sellLabel}
           </span>
@@ -68,5 +65,3 @@ const OrderRatio: React.FC<OrderRatioProps> = ({
     </div>
   )
 }
-
-export default OrderRatio

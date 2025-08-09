@@ -1,2 +1,1 @@
-import LastTrades from './LastTrades'
-export { LastTrades }
+export { LastTrades } from './last-trades'

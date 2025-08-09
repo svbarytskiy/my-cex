@@ -1,22 +1,16 @@
 import { FC, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { TradeListItem } from '../TradeListItem/TradeListItem'
-import { Loader } from 'common/components/Loader/Loader'
-import { NoDataScreen } from '../NoDataScreen/NoDataScreen'
-import { AggregatedTradePair } from 'store/slices/miniTicker/miniTickerSelector'
-import styles from './TickerListContent.module.css'
+import { NoDataScreen } from '../../ui/NoDataScreen/NoDataScreen'
+import { AggregatedTradePair } from 'app/store/slices/miniTicker/miniTickerSelector'
+import { Loader } from 'lucide-react'
 
 interface TickerListContentProps {
   pairs: AggregatedTradePair[]
   loading: boolean
-  onItemToggleFavorite?: (item: AggregatedTradePair) => void
 }
 
-const TickerListContent: FC<TickerListContentProps> = ({
-  pairs,
-  loading,
-  onItemToggleFavorite,
-}) => {
+const TickerListContent: FC<TickerListContentProps> = ({ pairs, loading }) => {
   const parentRef = useRef<HTMLDivElement>(null)
 
   const virtualizer = useVirtualizer({
@@ -30,22 +24,25 @@ const TickerListContent: FC<TickerListContentProps> = ({
 
   if (loading) {
     return (
-      <div className={styles.loadingContainer}>
-        <Loader color="#f0b90b" />
+      <div className="flex items-center justify-center w-full h-full min-h-[130px]">
+        <Loader />
       </div>
     )
   }
 
   if (pairs.length === 0) {
     return (
-      <div className={styles.noDataContainer}>
+      <div className="flex items-center justify-center w-full h-full">
         <NoDataScreen message="No data." iconSize={80} color="#bbb" />
       </div>
     )
   }
 
   return (
-    <div ref={parentRef} className={styles.listContainer}>
+    <div
+      ref={parentRef}
+      className="flex-1 overflow-y-auto box-border h-full [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-[#a1a1a1] [&::-webkit-scrollbar-thumb]:rounded-sm"
+    >
       <div
         style={{
           height: `${virtualizer.getTotalSize()}px`,
@@ -70,7 +67,7 @@ const TickerListContent: FC<TickerListContentProps> = ({
                 transform: `translateY(${virtualItem.start}px)`,
               }}
             >
-              <TradeListItem data={item} onToggleFavorite={() => {}} />
+              <TradeListItem data={item} />
             </div>
           )
         })}

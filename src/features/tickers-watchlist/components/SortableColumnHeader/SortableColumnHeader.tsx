@@ -1,14 +1,14 @@
 import { FC, memo } from 'react'
-import styles from './SortableColumnHeader.module.css'
-import { SortDirectionIcon } from '../SortDirectionIcon/SortDirectionIcon'
-import { SortDirection } from '../SortableTableHeader/SortableTableHeader'
+import clsx from 'clsx'
+import { SortDirectionIcon } from 'features/tickers-watchlist/ui/SortDirectionIcon/SortDirectionIcon'
+import { SortDirection } from 'features/tickers-watchlist/types/model'
 
 interface SortableColumnHeaderProps {
   id: string
   label: string
   sortable: boolean
   isCurrentlySorted: boolean
-  currentSortDirection: SortDirection
+  currentSortDirection: SortDirection | null
   onClick: (columnId: string) => void
 }
 
@@ -27,12 +27,30 @@ const SortableColumnHeader: FC<SortableColumnHeaderProps> = memo(
       }
     }
 
+    const headerColumnClasses = 'flex items-center max-w-full overflow-hidden truncate'
+
+    const headerContentClasses = clsx(
+      'flex items-center pr-[2px] overflow-hidden',
+      {
+        'cursor-pointer': sortable,
+        group: sortable,
+      },
+    )
+
+    const columnLabelClasses = clsx(
+      'text-xs',
+      'truncate',
+      'flex-grow',
+      'min-w-0',
+      {
+        'text-white': isCurrentlySorted,
+      },
+    )
+
     return (
-      <div
-        className={`${styles.headerColumn} ${isCurrentlySorted ? styles.activeSort : ''}`}
-      >
+      <div className={headerColumnClasses}>
         <div
-          className={`${styles.headerContent} ${sortable ? styles.sortable : ''}`}
+          className={headerContentClasses}
           onClick={handleLocalClick}
           role={sortable ? 'button' : undefined}
           tabIndex={sortable ? 0 : undefined}
@@ -53,9 +71,11 @@ const SortableColumnHeader: FC<SortableColumnHeaderProps> = memo(
               : '(Click to sort ascending)'
           }`}
         >
-          <div className={styles.columnLabel}>{label}</div>
+          <div className={columnLabelClasses}>{label}</div>
           {sortable && (
-            <SortDirectionIcon currentSortDirection={currentSortDirection} />
+            <div className="flex-shrink-0">
+              <SortDirectionIcon currentSortDirection={currentSortDirection} className='flex-shrink-0' />
+            </div>
           )}
         </div>
       </div>

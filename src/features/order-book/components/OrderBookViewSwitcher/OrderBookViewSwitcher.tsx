@@ -1,8 +1,5 @@
-// src/features/trading/ui/orderbook-view-switcher/ui/OrderBookViewSwitcher.tsx
 import { FC } from 'react'
-import styles from './OrderBookViewSwitcher.module.css'
 
-// SVG-іконки як React-компоненти (оптимізовано, без завантаження зовні)
 const Icons = {
   default: (
     <svg
@@ -19,15 +16,7 @@ const Icons = {
       </g>
     </svg>
   ),
-  // grouped: (
-  //     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //         <path fill="#EF454A" d="M17 2v6h-6V2z" opacity="0.4" />
-  //         <path fill="#20B26C" d="M9 2v6H3V2z" opacity="0.4" />
-  //         <g fill="#fff" opacity="0.8">
-  //             <path d="M17 10v8h-2v-8zM13 10v8h-2v-8zM9 10v8H7v-8zM5 10v8H3v-8z" />
-  //         </g>
-  //     </svg>
-  // ),
+
   bidsOnly: (
     <svg
       width="18"
@@ -70,11 +59,15 @@ export const OrderBookViewSwitcher: FC<OrderBookViewSwitcherProps> = ({
   activeView,
 }) => {
   return (
-    <div className={styles.container}>
+    <div className="flex gap-2 runded">
       {Object.entries(Icons).map(([key, icon]) => (
         <button
           key={key}
-          className={`${styles.iconButton} ${activeView === key ? styles.active : ''}`}
+          className={`
+            bg-transparent border-none cursor-pointer p-0.5 rounded opacity-60 transition-all duration-200
+            hover:opacity-80 hover:bg-background-tertiary-hover
+            ${activeView === key ? 'opacity-100' : ''}
+          `}
           onClick={() =>
             handleViewChange(key as 'default' | 'bidsOnly' | 'asksOnly')
           }

@@ -1,23 +1,6 @@
-// hooks/useOrderBook.ts
-import { useEffect, useMemo, useState } from 'react'
-
-import { createSelector } from '@reduxjs/toolkit'
-import { fetchExchangeInfo } from '../../../store/slices/exchangeInfo/exchangeInfoThunks'
-import {
-  subscribeOrderBookWS,
-  fetchOrderBook,
-  unsubscribeOrderBookWS,
-} from '../../../store/slices/orderBook/orderBookThunks'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
-
-const selectOrderBook = (state: any) => state.orderBook
-
-const selectOrderBookData = createSelector([selectOrderBook], orderBook => {
-  return {
-    bids: [...orderBook.bidsArray],
-    asks: [...orderBook.asksArray],
-  }
-})
+import { useEffect, useMemo } from 'react'
+import { selectOrderBookData } from 'app/store/slices/depth/depthSelectors'
+import { useAppSelector } from 'app/store/store'
 
 const calculateSpread = (bestBid: number, bestAsk: number) => {
   return {
@@ -66,24 +49,12 @@ const processOrders = (orders: string[][]) => {
   })
 }
 
-export const useOrderBook = (symbol = 'BTCUSDT') => {
-  const dispatch = useAppDispatch()
+export const useOrderBook = (precision: number) => {
   const price = useAppSelector((state: any) => state.ticker.price)
-  const { loading, error, wsConnected } = useAppSelector(
-    state => state.orderBook,
-  )
-  const data = useAppSelector(state => state.exchangeInfo.data)
-
-  const [activeView, setActiveView] = useState<
-    'default' | 'bidsOnly' | 'asksOnly'
-  >('default')
-  const [precision, setPrecision] = useState<number>(0.01)
-
-  const symbolInfo = data?.symbols?.find(s => s.symbol === symbol)
-  const tickSize = symbolInfo?.filters?.find(
-    f => f.filterType === 'PRICE_FILTER',
-  )?.tickSize
+  const { loading, error, wsConnected } = useAppSelector(state => state.depth)
   const { bids: rawBids, asks: rawAsks } = useAppSelector(selectOrderBookData)
+
+  const processingStartTime = performance.now()
 
   const { bids, asks, spread } = useMemo(() => {
     const aggregatedBids = aggregateOrders(rawBids, precision, 'bid')
@@ -121,37 +92,26 @@ export const useOrderBook = (symbol = 'BTCUSDT') => {
     return Math.max(maxBid, maxAsk)
   }, [bids, asks])
 
+  const processingEndTime = performance.now()
+  const totalProcessingTime = processingEndTime - processingStartTime
+
   useEffect(() => {
-    dispatch(fetchExchangeInfo(symbol))
-    dispatch(subscribeOrderBookWS(symbol))
-    dispatch(fetchOrderBook({ symbol }))
-
-    return () => {
-      dispatch(unsubscribeOrderBookWS(symbol))
+    if (rawBids.length > 0 || rawAsks.length > 0) {
+      console.log(
+        `OrderBook UI Processing Time: ${totalProcessingTime.toFixed(2)} ms`,
+      )
     }
-  }, [dispatch, symbol])
-
-  const handleViewChange = (view: 'default' | 'bidsOnly' | 'asksOnly') => {
-    setActiveView(view)
-  }
-
-  const handlePrecisionChange = (newPrecision: number) => {
-    setPrecision(newPrecision)
-  }
+  }, [totalProcessingTime, rawBids, rawAsks])
 
   return {
     loading,
     error,
     price,
-    activeView,
-    precision,
     processedBids,
     processedAsks,
     spread,
     maxQuantity,
     buyPercentage,
-    handleViewChange,
-    handlePrecisionChange,
     wsConnected,
   }
 }

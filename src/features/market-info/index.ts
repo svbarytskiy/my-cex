@@ -1,2 +1,1 @@
-import { MarketInfo } from './MarketInfo'
-export { MarketInfo }
+export { MarketInfo } from './market-info'

@@ -1,72 +1,64 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ArrowUp, ArrowDown } from 'lucide-react'
-import './styles.css'
+import clsx from 'clsx'
+import { formatNumber } from 'common/utils/number'
 
 interface SpreadData {
-  value: string
+  value: number
   percentage: string
 }
 
 interface SpreadProps {
-  price: string // ціна спреду або остання ціна
+  price: string
   spread: SpreadData
+  quotePriceCount: number
 }
 
-const SpreadDisplay: React.FC<SpreadProps> = ({ price, spread }) => {
+const SpreadDisplay: React.FC<SpreadProps> = ({
+  price,
+  spread,
+  quotePriceCount,
+}) => {
+  const [direction, setDirection] = useState<'up' | 'down'>('up')
   const prevPriceRef = useRef<number | null>(null)
-  const [direction, setDirection] = useState<'up' | 'down' | 'neutral'>(
-    'neutral',
-  )
-  const formatPrice = (value: string | number): string => {
-    const num = typeof value === 'string' ? parseFloat(value) : value
-    if (isNaN(num)) return '0.00'
-    return num.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-  }
+
   useEffect(() => {
     const currentPrice = parseFloat(price)
+
     const prevPrice = prevPriceRef.current
 
     if (prevPrice !== null) {
-      if (currentPrice > prevPrice) setDirection('up')
+      if (currentPrice >= prevPrice) setDirection('up')
       else if (currentPrice < prevPrice) setDirection('down')
-      else setDirection('neutral')
     }
 
     prevPriceRef.current = currentPrice
   }, [price])
 
-  const getColor = () => {
-    switch (direction) {
-      case 'up':
-        return '#0ecb81' // зелений
-      case 'down':
-        return '#ff4d4f' // червоний
-      default:
-        return '#ffff' // сірий
-    }
-  }
+  const textColorClass = {
+    up: 'text-price-up',
+    down: 'text-price-down',
+  }[direction]
 
   return (
-    <div className="order-book__spread">
+    <div className="flex justify-between items-center text-sm px-3 py-2">
       <div
-        style={{
-          color: getColor(),
-          display: 'flex',
-          alignItems: 'center',
-          gap: 4,
-          fontSize: 20,
-          fontWeight: 600,
-        }}
+        className={clsx(
+          'flex items-center gap-1 text-lg font-semibold',
+          textColorClass,
+        )}
       >
-        {formatPrice(parseFloat(price).toFixed(2))}
-        {direction === 'up' && <ArrowUp size={14} />}
-        {direction === 'down' && <ArrowDown size={14} />}
+        {formatNumber(price, {
+          minimumFractionDigits: quotePriceCount,
+          maximumFractionDigits: quotePriceCount,
+        })}
       </div>
-      <div className="spread-info" style={{ color: '#999' }}>
-        Spread: {spread.value} ({spread.percentage}%)
+      <div className="flex items-center gap-1 text-xs text-text-secondary">
+        Spread:
+        {formatNumber(spread.value, {
+          minimumFractionDigits: quotePriceCount,
+          maximumFractionDigits: quotePriceCount,
+        })}
+        ({spread.percentage}%)
       </div>
     </div>
   )

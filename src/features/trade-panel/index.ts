@@ -1,1 +1,1 @@
-export { TradePanel } from './TradePanel'
+export { TradePanel } from './trade-panel'

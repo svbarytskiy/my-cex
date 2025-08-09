@@ -1,101 +1,106 @@
 import { FC, memo } from 'react'
 import { Link } from 'react-router-dom'
-import styles from './TradeListItem.module.css'
 import { FavoriteStar } from 'common/components/FavoriteStar/FavoriteStar'
-import { formatNumber } from 'utils/number'
-import { AggregatedTradePair } from 'store/slices/miniTicker/miniTickerSelector'
+import { formatNumber } from 'common/utils/number'
+import { AggregatedTradePair } from 'app/store/slices/miniTicker/miniTickerSelector'
+import { formatLargeNumber } from 'common/utils/formatLargeNumber'
+import { getPrecisionFromMinPrice } from 'common/utils/getPrecisionFromMinPrice'
 
 interface TradeListItemProps {
   data: AggregatedTradePair
-  onToggleFavorite: (symbol: string, isFavorite: boolean) => void
 }
 
-const TradeListItem: FC<TradeListItemProps> = memo(
-  ({ data, onToggleFavorite }) => {
-    if (!data) return null
-    const { symbol, volume, currentPrice, priceChange24h, priceTickSize } = data
+const TradeListItem: FC<TradeListItemProps> = memo(({ data }) => {
+  if (!data) return null
+  const {
+    symbol,
+    baseAsset,
+    quoteAsset,
+    volume,
+    currentPrice,
+    priceChange24h,
+    priceTickSize,
+    isFavorite,
+  } = data
 
-    const isFavorite = false
-    const lastPrice = currentPrice
-    const change24h = priceChange24h
+  const lastPrice = currentPrice
+  const change24h = priceChange24h
+  const changeColorClass =
+    change24h >= 0 ? 'text-price-up' : change24h < 0 ? 'text-price-down' : ''
 
-    const changeColorClass =
-      change24h >= 0
-        ? styles.itemColorBuy
-        : change24h < 0
-          ? styles.itemColorSell
-          : ''
+  const formatPrice = formatNumber(lastPrice, {
+    minimumFractionDigits: getPrecisionFromMinPrice(Number(priceTickSize)),
+  })
 
-    const formatVolume = (vol: number) => {
-      if (vol >= 1_000_000_000) return (vol / 1_000_000_000).toFixed(2) + 'B'
-      if (vol >= 1_000_000) return (vol / 1_000_000).toFixed(2) + 'M'
-      if (vol >= 1_000) return (vol / 1_000).toFixed(2) + 'K'
-      return vol.toLocaleString()
-    }
-
-    const getPrecisionFromMinPrice = (minPrice: number): number => {
-      const s = minPrice.toString()
-      if (s.includes('e-')) {
-        return parseInt(s.split('e-')[1], 10)
-      }
-      if (s.includes('.')) {
-        return s.split('.')[1].length
-      }
-      return 0
-    }
-
-    const formatPrice = formatNumber(lastPrice, {
-      minimumFractionDigits: getPrecisionFromMinPrice(Number(priceTickSize)),
-    })
-    return (
-      <div className={styles.listItemContainer}>
-        <div className={styles.tradeMarketColumnWrap}>
-          <Link className={styles.contentLink} to={`/trade/${symbol}`}>
-            <div className={styles.itemSymbolColumn}>
-              <div className={styles.favoriteWrapper}>
-                <FavoriteStar
-                  isActive={isFavorite}
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    onToggleFavorite(symbol, !isFavorite)
-                  }}
-                  hasBorder={false}
-                />
+  return (
+    <div
+      className="relative left-0 top-0 h-[45px] w-full box-border px-4 py-0
+                   hover:bg-background-tertiary-hover"
+    >
+      <div className="w-full h-full">
+        <Link
+          to={`/trade/${baseAsset + '_' + quoteAsset}`}
+          className="flex items-center sm:items-start w-full h-full no-underline text-inherit overflow-hidden"
+        >
+          <div
+            className="flex-grow-[5] flex-shrink-1 basis-0 min-w-[120px] justify-start
+                       flex-nowrap pt-[4px] flex items-start"
+          >
+            <div className="pt-[3px] flex items-center justify-center">
+              <FavoriteStar
+                isActive={isFavorite}
+                onClick={() => {}}
+                hasBorder={false}
+                className="text-text-secondary hover:text-text-secondary hover:opacity-100"
+              />
+            </div>
+            <div className="ml-1 flex flex-col">
+              <div className="flex items-center leading-[22px] whitespace-nowrap text-ellipsis">
+                <span className="text-[14px] text-text-primary select-none">
+                  {symbol}
+                </span>
               </div>
-              <div className={styles.itemSymbolContainer}>
-                <div className={styles.itemSymbolText}>
-                  <span className={styles.symbolText}>{symbol}</span>
-                  {/* <span className={styles.baseAssetText}>
-                    /{displayBaseAsset}
-                  </span> */}
-                  {/* Якщо у вас MiniTicker не містить leverage, ця частина буде пуста */}
-                  {/* {leverage && (
-                    <span className={styles.marketMultiple}>{leverage}</span>
-                  )} */}
-                </div>
-                <div className={styles.volumeText}>
-                  Vol {formatVolume(volume)}
-                </div>
+              <div
+                className="leading-4 text-text-secondary whitespace-nowrap overflow-hidden text-ellipsis
+                           text-[12px]"
+              >
+                Vol {formatLargeNumber(volume)}
               </div>
             </div>
+          </div>
 
-            <div className={styles.itemLastPriceColumn}>
-              <div className={styles.lastPriceText}>{formatPrice}</div>
+          <div
+            className="flex-grow-[5] flex-shrink-1 basis-0 min-w-[120px] flex flex-col items-end justify-center pr-0 ml-auto
+                       sm:min-w-[60px] sm:flex-nowrap sm:pt-[5px] sm:flex-row sm:items-start sm:justify-end sm:ml-0 sm:pr-0"
+          >
+            <div className="text-text-primary text-[14px] text-right w-full">
+              {formatPrice}
             </div>
+            <div
+              className={`block text-[12px] ${changeColorClass}
+                         sm:hidden`}
+            >
+              {change24h > 0 ? '+' : ''}
+              {change24h.toFixed(2)}%
+            </div>
+          </div>
 
-            <div className={`${styles.itemChangeColumn} ${changeColorClass}`}>
-              <div className={styles.changeText}>
-                {change24h > 0 ? '+' : ''}
-                {change24h.toFixed(2)}%
-              </div>
+          <div
+            className={`hidden
+                        sm:flex-grow-[5] sm:flex-shrink-1 sm:basis-0 sm:min-w-[60px] sm:justify-end
+                        sm:flex-nowrap sm:pt-[5px] sm:flex sm:items-start sm:overflow-hidden sm:text-ellipsis sm:whitespace-nowrap
+                        ${changeColorClass}`}
+          >
+            <div className="text-inherit text-[14px] text-right w-full">
+              {change24h > 0 ? '+' : ''}
+              {change24h.toFixed(2)}%
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
-    )
-  },
-)
+    </div>
+  )
+})
 
 TradeListItem.displayName = 'TradeListItem'
 

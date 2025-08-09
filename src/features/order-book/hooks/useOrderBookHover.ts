@@ -1,25 +1,6 @@
 import { useState, RefObject } from 'react'
+import { HoverInfo, Order, AggregatedData } from '../types'
 
-interface Order {
-  price: string
-  quantity: string
-  total: string
-}
-
-interface HoverInfo {
-  price: string
-  type: 'ask' | 'bid'
-  yOffset: number
-  xOffset: number
-  yPosition: number
-  index: number
-}
-
-interface AggregatedData {
-  avgPrice: string
-  total: string
-  count: number
-}
 
 export const useOrderBookHover = (
   containerRef: RefObject<HTMLElement | null>,
@@ -33,24 +14,16 @@ export const useOrderBookHover = (
     index: number,
   ) => {
     if (!containerRef.current) return
+
     const containerRect = containerRef.current.getBoundingClientRect()
     const rowRect = rowEl.getBoundingClientRect()
 
-    const scrollTop = containerRef.current.scrollTop
-    // const scrollLeft = containerRef.current.scrollLeft
-
-    // Позиція відносно контейнера з урахуванням скролу
-    const yPosition =
-      type === 'ask'
-        ? rowEl.offsetTop
-        : rowRect.bottom - containerRect.top + scrollTop
-
-    const yOffset =
-      type === 'ask'
-        ? rowRect.top - containerRect.top
-        : rowRect.bottom - containerRect.top
-
+    let yOffset = rowRect.top - containerRect.top
+    if (type === 'bid') {
+      yOffset += 20
+    }
     const xOffset = rowRect.right
+    const yPosition = rowEl.offsetTop
 
     setHoverInfo({ price, type, yOffset, yPosition, xOffset, index })
   }
@@ -61,21 +34,31 @@ export const useOrderBookHover = (
     orders: Order[],
     hoverInfo: HoverInfo | null,
   ): AggregatedData | null => {
-    if (!hoverInfo) return null
+    if (!hoverInfo || !orders || orders.length === 0) return null
 
-    const slice =
-      hoverInfo.type === 'ask'
-        ? orders.slice(hoverInfo.index)
-        : orders.slice(0, hoverInfo.index + 1)
+    let slice: Order[] = []
 
-    const total = slice.reduce((sum, o) => sum + parseFloat(o.quantity), 0)
-    const avg =
-      slice.reduce((sum, o) => sum + parseFloat(o.price), 0) / slice.length
+    if (hoverInfo.type === 'ask') {
+      slice = orders.slice(hoverInfo.index)
+    } else {
+      slice = orders.slice(0, hoverInfo.index + 1)
+    }
+
+    if (slice.length === 0) return null
+
+    const totalQuantity = slice.reduce(
+      (sum, o) => sum + parseFloat(o.quantity),
+      0,
+    )
+    const sumPrices = slice.reduce((sum, o) => sum + parseFloat(o.price), 0)
+    const avgPrice = sumPrices / slice.length
+
+    const quoteSum = totalQuantity * avgPrice
 
     return {
-      avgPrice: parseFloat(avg.toFixed(2)).toLocaleString(),
-      total: parseFloat(total.toFixed(6)).toLocaleString(),
-      count: slice.length,
+      avgPrice: avgPrice,
+      total: totalQuantity,
+      quoteSum: quoteSum,
     }
   }
 

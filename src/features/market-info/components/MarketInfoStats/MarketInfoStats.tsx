@@ -1,11 +1,13 @@
-// components/MarketInfo/components/MarketInfoStats/MarketInfoStats.tsx
 import { FC, memo } from 'react'
-import styles from './MarketInfoStats.module.css'
-import { formatNumber } from 'utils/number'
-import { formatPercent } from 'utils/format'
+import { formatNumber } from 'common/utils/number'
+import { formatPercent } from 'common/utils/format'
 import { StatItem } from '../StatItem/StatItem'
+import clsx from 'clsx'
+import { formatLargeNumber } from 'common/utils/formatLargeNumber'
 
 interface MarketInfoStatsProps {
+  baseAsset: string
+  quoteAsset: string
   percentChange: string
   quoteChange: string
   high: string
@@ -15,16 +17,36 @@ interface MarketInfoStatsProps {
 }
 
 const MarketInfoStats: FC<MarketInfoStatsProps> = memo(
-  ({ percentChange, quoteChange, high, low, volume, quoteVolume }) => {
+  ({
+    baseAsset,
+    quoteAsset,
+    percentChange,
+    quoteChange,
+    high,
+    low,
+    volume,
+    quoteVolume,
+  }) => {
     const isPositiveChange = percentChange.includes('-')
 
     return (
-      <div className={styles.statsContainer}>
+      <div
+        className="
+        grid grid-cols-[1fr_1fr] grid-rows-[auto_auto] gap-4 
+        [grid-template-areas:'A_B'_'C_D']                    
+        md:flex md:flex-row md:gap-x-2 md:gap-y-0         
+        md:items-center md:justify-center
+      "
+      >
         <StatItem
+          className="hidden md:flex"
           label="24h change"
           value={
             <span
-              className={`${styles.changeValue} ${isPositiveChange ? styles.negative : styles.positive}`}
+              className={clsx(
+                'flex text-xs font-medium rounded-md items-center',
+                isPositiveChange ? 'text-price-down' : 'text-price-up',
+              )}
             >
               <div style={{ direction: 'ltr' }}>
                 {formatNumber(quoteChange)}
@@ -35,15 +57,35 @@ const MarketInfoStats: FC<MarketInfoStatsProps> = memo(
             </span>
           }
         />
-        <StatItem label="24h high" value={formatNumber(high)} />
-        <StatItem label="24h low" value={formatNumber(low)} />
         <StatItem
-          label="24h volume (BTC)"
+          label="24h High"
+          value={formatNumber(high)}
+          className="[grid-area:A]"
+        />
+        <StatItem
+          label="24h Low"
+          value={formatNumber(low)}
+          className="[grid-area:C]"
+        />
+        <StatItem
+          className="hidden md:flex "
+          label={`24h Volume(${baseAsset})`}
           value={formatNumber(volume, { maximumFractionDigits: 2 })}
         />
         <StatItem
-          label="24h turnover (USDT)"
+          className="flex md:hidden [grid-area:B]"
+          label={`24h Vol(${baseAsset})`}
+          value={formatLargeNumber(volume)}
+        />
+        <StatItem
+          className="hidden md:flex"
+          label={`24h Turnover(${quoteAsset})`}
           value={formatNumber(quoteVolume, { maximumFractionDigits: 2 })}
+        />
+        <StatItem
+          className="flex md:hidden [grid-area:D]"
+          label={`24h Vol(${quoteAsset})`}
+          value={formatLargeNumber(quoteVolume)}
         />
       </div>
     )

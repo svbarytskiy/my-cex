@@ -1,27 +1,16 @@
 import { FC } from 'react'
-import styles from './TickerListHeader.module.css'
 import { HorizontalScrollContainer } from 'common/components/HorizontalScrollContainer/HorizontalScrollContainer'
-import { TabButton } from 'common/components/TabButton/TabButton'
+import { TabButton } from 'common/ui/tab-button'
+import { SortChip } from '../../ui/SortChip/SortChip'
 import {
   SortableColumn,
-  SortableTableHeader,
   SortDirection,
-} from '../SortableTableHeader/SortableTableHeader'
-import { SortChip } from '../SortChip/SortChip'
-
-interface SubTab {
-  id: string
-  label: string
-}
-
-interface Tab {
-  id: string
-  label: string
-  subTabs?: SubTab[]
-}
+  Tab,
+} from 'features/tickers-watchlist/types/model'
+import { SortableTableHeader } from '../SortableTableHeader/SortableTableHeader'
+import { TABS } from '../../constants'
 
 interface TickerListHeaderProps {
-  tabs: Tab[]
   activeTab: Tab
   onTabClick: (id: Tab) => void
   activeSubTabId: string | null
@@ -35,7 +24,6 @@ interface TickerListHeaderProps {
 }
 
 const TickerListHeader: FC<TickerListHeaderProps> = ({
-  tabs,
   activeTab,
   onTabClick,
   activeSubTabId,
@@ -45,21 +33,22 @@ const TickerListHeader: FC<TickerListHeaderProps> = ({
   currentSortDirection,
 }) => {
   return (
-    <div className={styles.tickerListHeader}>
-      <div className={styles.mainTabsSection}>
-        <HorizontalScrollContainer scrollAmount={150}>
-          {tabs.map(tab => (
+    <div >
+      <div className="px-4 border-b border-border-color">
+        <HorizontalScrollContainer scrollAmount={150} scrollToId={activeTab.id}>
+          {TABS.map(tab => (
             <TabButton
               key={tab.id}
               label={tab.label}
               isActive={tab.id === activeTab.id}
               onClick={() => onTabClick(tab)}
+              id={tab.id}
             />
           ))}
         </HorizontalScrollContainer>
       </div>
       {activeTab?.subTabs && activeTab.subTabs.length > 0 && (
-        <div className={styles.subTabsSection}>
+        <div className="flex gap-2 mt-2 px-4">
           <HorizontalScrollContainer scrollAmount={150}>
             {activeTab.subTabs.map(subTab => (
               <SortChip
@@ -72,7 +61,7 @@ const TickerListHeader: FC<TickerListHeaderProps> = ({
           </HorizontalScrollContainer>
         </div>
       )}
-      <div className={styles.tableHeaderSection}>
+      <div>
         <SortableTableHeader
           initialSortBy={currentSortColumn}
           initialSortDirection={currentSortDirection}

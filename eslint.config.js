@@ -21,7 +21,13 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist', 'node_modules', 'coverage', 'eslint.config.js'],
+    ignores: [
+      'dist',
+      'node_modules',
+      'coverage',
+      'eslint.config.js',
+      'jest.config.js',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -48,7 +54,7 @@ export default tseslint.config(
       'import/resolver': {
         typescript: {
           project: './tsconfig.json',
-          alwaysTryTypes: true, // Важливо для аліасів!
+          alwaysTryTypes: true
         },
       },
     },

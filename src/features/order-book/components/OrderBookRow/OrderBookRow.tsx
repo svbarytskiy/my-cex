@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
-import './styles.css'
+import { memo, useRef } from 'react'
+import { formatLargeNumber } from 'common/utils/formatLargeNumber'
+import { formatNumber } from 'common/utils/number'
 
 interface OrderBookRowProps {
   price: string
   quantity: string
-  total?: string
+  total: string
   maxQuantity: number
   type: 'bid' | 'ask'
   index: number
@@ -16,9 +17,11 @@ interface OrderBookRowProps {
   ) => void
   onLeave: () => void
   isHovered: boolean
+  minQty: number
+  quotePriceCount: number
 }
 
-const OrderBookRow = React.memo<OrderBookRowProps>(
+const OrderBookRow = memo<OrderBookRowProps>(
   ({
     price,
     quantity,
@@ -29,52 +32,52 @@ const OrderBookRow = React.memo<OrderBookRowProps>(
     onLeave,
     index,
     isHovered,
+    minQty,
+    quotePriceCount,
   }) => {
     const ref = useRef<HTMLDivElement>(null)
     const handleEnter = () => {
       if (ref.current) onHover(price, type, ref.current, index)
     }
-    const qty = parseFloat(quantity)
-    const fillPercent = Math.min(100, (qty / maxQuantity) * 100)
-    const formatPrice = (value: string | number): string => {
-      const num = typeof value === 'string' ? parseFloat(value) : value
-      if (isNaN(num)) return '0.00'
-      return num.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    }
+    const fillPercent = (parseFloat(total) / maxQuantity) * 100
+    const priceColorClass = type === 'bid' ? 'text-price-up' : 'text-price-down'
+    const fillColorClass =
+      type === 'bid' ? 'bg-price-up/10' : 'bg-price-down/10'
 
-    const backgroundColor =
-      type === 'bid' ? 'rgba(37, 167, 80, 0.2)' : 'rgba(202, 63, 100, 0.2)'
     return (
       <div
-        className={`order-book__row ${type} ${isHovered ? 'order-book__row__hovered' : ''}`}
+        className={`w-full h-5 items-center
+          flex p-1.5 px-3 relative overflow-hidden
+           cursor-pointer text-text-primary text-xs
+          ${isHovered ? 'md:bg-gray-700/40' : ''}
+        `}
         key={`${type}-${price}`}
         ref={ref}
         onMouseEnter={handleEnter}
         onMouseLeave={onLeave}
       >
         <div
-          className="order-book__fill"
-          style={{
-            width: `${fillPercent}%`,
-            backgroundColor,
-          }}
+          className={`
+            absolute right-0 top-0 bottom-0 z-0 pointer-events-none 
+            transition-all duration-200 ease-in-out ${fillColorClass}
+          `}
+          style={{ width: `${fillPercent}%` }}
         />
-        <div className={`order-book__cell price ${type}`}>
-          {formatPrice(parseFloat(price).toFixed(2))}
+
+        <div className={`z-10 ${priceColorClass} flex-1 flex justify-start`}>
+          {formatNumber(parseFloat(price), {
+            minimumFractionDigits: quotePriceCount,
+            maximumFractionDigits: quotePriceCount,
+          })}
         </div>
-        <div className="order-book__cell">
-          {parseFloat(quantity).toFixed(4)}
+
+        <div className="z-10 flex-1 flex justify-end">
+          {formatLargeNumber(quantity, { minimumFractionDigits: minQty })}
         </div>
-        <div className="order-book__cell">
-          {total ? parseFloat(total).toFixed(6) : ''}
+
+        <div className="z-10 flex-1 flex justify-end">
+          {formatLargeNumber(total, { minimumFractionDigits: minQty })}
         </div>
-        <div
-          className={`order-book__cell ${type}`}
-          style={{ width: `${100}%` }}
-        />
       </div>
     )
   },

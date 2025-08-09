@@ -1,5 +1,5 @@
 export const TABS = [
-  { id: 'Favs', label: 'Favorite' },
+  { id: 'FAVORITES', label: 'Favorite' },
   { id: 'USDT', label: 'USDT' },
   { id: 'USDC', label: 'USDC' },
   { id: 'FDUSD', label: 'FDUSD' },
@@ -39,6 +39,29 @@ export const TABS = [
   },
   {
     id: 'Margin',
-    label: 'Margin'
+    label: 'Margin',
   },
 ]
+
+export const COLUMNS_DEFINITIONS = {
+  pair: {
+    id: 'pair',
+    label: 'Pair',
+    sortable: true,
+  },
+  volume: {
+    id: 'volume',
+    label: 'Vol',
+    sortable: true,
+  },
+  lastPrice: {
+    id: 'lastPrice',
+    label: 'Last Price',
+    sortable: true,
+  },
+  change24h: {
+    id: 'change24h',
+    label: '24h Change',
+    sortable: true,
+  },
+} as const

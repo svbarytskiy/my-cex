@@ -1,12 +1,10 @@
-// src/components/TradingToolbar/TradingToolbar.tsx
-import React from 'react'
-
-import styles from './Toolbar.module.css'
-import { ArrowDownIcon } from '../../icons/ArrowDownIcon'
-import { DrawingIcon } from '../../icons/DrawingIcon'
-import { IndicatorIcon } from '../../icons/IndicatorIcon'
-import { PlusIcon } from '../../icons/PlusIcon'
+// import { ArrowDownIcon } from '../../icons/ArrowDownIcon'
+// import { DrawingIcon } from '../../icons/DrawingIcon'
+// import { IndicatorIcon } from '../../icons/IndicatorIcon'
+// import { PlusIcon } from '../../icons/PlusIcon'
 import { KlineInterval } from '../../../../binance/types/kline'
+import { FC } from 'react'
+import clsx from 'clsx'
 
 const timeIntervals = [
   '1s',
@@ -27,48 +25,53 @@ interface TradingToolbarProps {
   onIntervalChange: (interval: KlineInterval) => void
 }
 
-export const Toolbar: React.FC<TradingToolbarProps> = ({
+export const Toolbar: FC<TradingToolbarProps> = ({
   activeInterval,
   onIntervalChange,
 }) => {
   return (
-    <div className={styles.toolbarContainer}>
-      <div className={styles.timeIntervalsContainer}>
-        <div className={styles.timeIntervals}>
+    <div className="flex items-center h-8 box-border">
+      <div className="flex items-center mr-2">
+        <div className="flex text-xs">
           {timeIntervals.map(interval => (
             <div
               key={interval}
-              className={`${styles.timeIntervalItem} ${
-                activeInterval === interval ? styles.active : ''
-              }`}
-              onClick={() => onIntervalChange(interval)}
+              onClick={() => onIntervalChange(interval as KlineInterval)}
+              className={clsx(
+                'px-1.5 h-6 flex items-center justify-center cursor-pointer duration-150 rounded-sm mr-0.5 select-none',
+                'hover:text-text-primary',
+                {
+                  'text-text-secondary': activeInterval !== interval,
+                  'text-text-primary font-semibold': activeInterval === interval,
+                },
+              )}
             >
               {interval}
             </div>
           ))}
         </div>
-        <ArrowDownIcon className={styles.arrowIcon} />
+        {/* <ArrowDownIcon className="w-4 h-4 ml-1 cursor-pointer text-text-secondary hover:text-text-primary" /> */}
       </div>
 
-      <div className={styles.divider} />
+      {/* <div className="w-px h-5 bg-border-color mx-2" />
 
-      <div className={styles.toolsContainer}>
-        <div className={styles.toolItem}>
+      <div className="flex items-center">
+        <div className="flex items-center justify-center w-6 h-6 mr-2 cursor-pointer text-text-secondary hover:text-text-primary">
           <DrawingIcon />
         </div>
 
-        <div className={styles.toolItem}>
+        <div className="flex items-center justify-center w-6 h-6 mr-2 cursor-pointer text-text-secondary hover:text-text-primary">
           <IndicatorIcon />
         </div>
 
-        <div className={styles.toolItem}>
-          <span className={`${styles.chartIcon} icon-kline-candles`} />
+        <div className="flex items-center justify-center w-6 h-6 mr-2 cursor-pointer text-text-secondary hover:text-text-primary">
+          <span className="text-base icon-kline-candles" />
         </div>
 
-        <div className={styles.toolItem}>
+        <div className="flex items-center justify-center w-6 h-6 cursor-pointer text-text-secondary hover:text-text-primary">
           <PlusIcon />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

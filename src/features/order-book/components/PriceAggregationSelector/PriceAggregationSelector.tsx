@@ -1,89 +1,60 @@
-// src/features/trading/ui/price-aggregation/ui/PriceAggregationSelector.tsx
-import { useState } from 'react'
-import styles from './PriceAggregationSelector.module.css'
-
-// Типизація
-// type AggregationLevel = {
-//   value: number
-//   label: string
-// }
-
-// type PairSettings = {
-//   [pair: string]: AggregationLevel[]
-// }
-
-// Налаштування для різних пар (можна винести в config)
-// const PAIR_AGGREGATION_LEVELS: PairSettings = {
-//     'BTCUSDT': [
-//         { value: 0.1, label: '0.1' },
-//         { value: 0.5, label: '0.5' },
-//         { value: 1, label: '1' },
-//         { value: 5, label: '5' },
-//         { value: 10, label: '10' }
-//     ],
-//     'ETHUSDT': [
-//         { value: 0.01, label: '0.01' },
-//         { value: 0.05, label: '0.05' },
-//         { value: 0.1, label: '0.1' },
-//         { value: 0.5, label: '0.5' },
-//         { value: 1, label: '1' }
-//     ],
-//     // Додати інші пари...
-// };
+import { useState, useMemo } from 'react'
 
 interface PriceAggregationSelectorProps {
-  currentPair: string
+  price: string
   tickSize: number
-
+  precision: number
   onAggregationChange: (value: number) => void
+}
+
+function calculateAggregationLevels(tickSize: number, price: number): number[] {
+  const steps: number[] = []
+  let step = tickSize
+
+  while (step <= price / 100) {
+    steps.push(step)
+    step *= 10
+
+    if (steps.length > 5) break
+  }
+
+  if (steps.length === 0) {
+    steps.push(tickSize)
+  }
+
+  return steps
 }
 
 export const PriceAggregationSelector = ({
   tickSize,
+  price,
+  precision,
   onAggregationChange,
 }: PriceAggregationSelectorProps) => {
-  const aggregationLevels = calculateAggregationLevels(tickSize, 100000) // Тут можна передати ціну, якщо потрібно
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedValue, setSelectedValue] = useState<number>(
-    aggregationLevels[0] || tickSize,
+  const aggregationLevels = useMemo(
+    () => calculateAggregationLevels(tickSize, Number(price)),
+    [tickSize, price],
   )
 
-  function calculateAggregationLevels(
-    tickSize: number,
-    price: number,
-  ): number[] {
-    const steps: number[] = []
-    let step = tickSize
-
-    while (step <= price / 100) {
-      steps.push(step)
-      step *= 10
-
-      if (steps.length > 7) break
-    }
-
-    if (steps.length === 0) {
-      steps.push(tickSize)
-    }
-
-    return steps
-  }
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedValue, setSelectedValue] = useState<number>(
+    aggregationLevels[0] || precision,
+  )
 
   return (
-    <div
-      className={styles.container}
-      tabIndex={1}
-      onBlur={() => setIsOpen(false)}
-    >
-      <div className={styles.selector} onClick={() => setIsOpen(!isOpen)}>
-        <div className={styles.selectedValue}>
-          {selectedValue.toFixed(selectedValue < 1 ? 2 : 1)}
+    <div className="relative w-20" tabIndex={1} onBlur={() => setIsOpen(false)}>
+      <div
+        className="flex items-center justify-between px-2 py-1 bg-background-tertiary rounded-md cursor-pointer transition-all duration-200 h-[18px] border border-transparent hover:bg-background-tertiary-hover" // Replaces .selector & .selector:hover
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="text-xs font-medium text-[#eaecef]">
+          {selectedValue}
         </div>
         <svg
           width="16"
           height="16"
           viewBox="0 0 1024 1024"
-          className={`${styles.arrow} ${isOpen ? styles.rotated : ''}`}
+          className={`transition-transform duration-200 text-[#81858c] ${isOpen ? 'rotate-180' : ''}`}
         >
           <path
             fill="currentColor"
@@ -93,18 +64,18 @@ export const PriceAggregationSelector = ({
       </div>
 
       {isOpen && (
-        <div className={styles.dropdown}>
+        <div className="absolute top-full left-0 w-full bg-background-tertiary rounded-md mt-1 z-50 shadow-lg max-h-[220px] overflow-y-auto">
           {aggregationLevels.map(value => (
             <div
               key={value}
-              className={`${styles.option} ${selectedValue === value ? styles.active : ''}`}
+              className={`px-3 py-2 text-xs text-[#eaecef] cursor-pointer transition-colors duration-100 hover:bg-background-tertiary-hover ${selectedValue === value ? 'text-accent-primary bg-[rgba(240,185,11,0.1)]' : ''}`} // Replaces .option, .option:hover, & .option.active
               onClick={() => {
                 setSelectedValue(value)
                 onAggregationChange(value)
                 setIsOpen(false)
               }}
             >
-              {value.toFixed(value < 1 ? 2 : 1)}
+              {value}
             </div>
           ))}
         </div>

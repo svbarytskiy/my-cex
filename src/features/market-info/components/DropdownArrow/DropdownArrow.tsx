@@ -1,11 +1,8 @@
-// components/DropdownArrow/DropdownArrow.tsx
-
-import React, { forwardRef } from 'react'; 
-import styles from './DropdownArrow.module.css';
+import { type MouseEvent, forwardRef } from 'react'
 
 interface DropdownArrowProps {
-  isOpen: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  isOpen: boolean
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
 const DropdownArrow = forwardRef<HTMLButtonElement, DropdownArrowProps>(
@@ -13,13 +10,25 @@ const DropdownArrow = forwardRef<HTMLButtonElement, DropdownArrowProps>(
     <button
       ref={ref}
       type="button"
-      className={styles.dropdownArrow}
+      className="
+        bg-transparent
+        flex justify-center items-center
+        cursor-pointer
+        border-none
+        w-6 h-6 p-0
+        flex-shrink-0
+        text-gray-400 hover:text-white
+        focus:outline-none
+      "
       onClick={onClick}
       aria-expanded={isOpen}
       aria-label={isOpen ? 'Collapse dropdown' : 'Expand dropdown'}
     >
       <svg
-        className={`${styles.arrowIcon} ${isOpen ? styles.rotated : ''}`}
+        className={`
+          transition-transform duration-200 ease-in-out
+          ${isOpen ? 'rotate-180' : ''}
+        `}
         width="16"
         height="16"
         viewBox="0 0 12 12"
@@ -35,9 +44,9 @@ const DropdownArrow = forwardRef<HTMLButtonElement, DropdownArrowProps>(
         />
       </svg>
     </button>
-  )
-);
+  ),
+)
 
-DropdownArrow.displayName = 'DropdownArrow';
+DropdownArrow.displayName = 'DropdownArrow'
 
-export { DropdownArrow };
+export { DropdownArrow }

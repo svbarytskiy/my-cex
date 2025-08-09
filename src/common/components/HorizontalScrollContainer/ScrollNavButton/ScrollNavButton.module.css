@@ -2,7 +2,6 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  /* background-color: var(--panel-bg); */
   background: none;
   color: white;
   border: none;
