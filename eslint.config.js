@@ -27,6 +27,7 @@ export default tseslint.config(
       'coverage',
       'eslint.config.js',
       'jest.config.js',
+      'commitlint.config.js'
     ],
   },
   js.configs.recommended,
