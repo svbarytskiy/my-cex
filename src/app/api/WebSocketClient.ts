@@ -12,6 +12,10 @@ export class WebSocketClient {
     this.connect()
   }
 
+  public get reconnectTimerValue(): ReturnType<typeof setTimeout> | undefined {
+    return this.reconnectTimer
+  }
+
   private connect() {
     this.socket = new WebSocket(this.baseUrl)
 

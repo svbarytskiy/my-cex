@@ -6,10 +6,10 @@ class DepthProcessor {
   private currentLastUpdateId: number = 0
   private updateBuffer: DepthEvent[] = []
   private isSnapshotInitialized: boolean = false
-  private limit: number = 500
+  // private limit: number = 500
 
-  constructor(limit: number = 500) {
-    this.limit = limit
+  constructor() {
+    // this.limit = limit
   }
 
   private applyDepthEvent(event: DepthEvent) {

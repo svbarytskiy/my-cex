@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Toolbar } from '../Toolbar/Toolbar'
-import { KlineInterval } from 'binance/types/kline'
 import { clsx } from 'clsx'
 import { HorizontalScrollContainer } from 'common/components/HorizontalScrollContainer/HorizontalScrollContainer'
+import { KlineInterval } from 'app/store/slices/candles/types'
 
 interface ChartHeaderProps {
   activeView: 'standard' | 'tradingview' | 'depth'
