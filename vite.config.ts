@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/my-cex/',
+  base: process.env.NODE_ENV === 'production' ? '/my-cex/' : '/',
   resolve: {
     alias: {
       common: '/src/common',

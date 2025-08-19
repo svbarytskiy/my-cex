@@ -42,7 +42,8 @@ export const Toolbar: FC<TradingToolbarProps> = ({
                 'hover:text-text-primary',
                 {
                   'text-text-secondary': activeInterval !== interval,
-                  'text-text-primary font-semibold': activeInterval === interval,
+                  'text-text-primary font-semibold':
+                    activeInterval === interval,
                 },
               )}
             >

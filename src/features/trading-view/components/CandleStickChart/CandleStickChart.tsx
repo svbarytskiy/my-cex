@@ -21,7 +21,9 @@ const CandleStickChart: FC<CandleStickChartProps> = ({
     updateCandle(streamingData)
   }, [streamingData])
 
-  return <div ref={chartContainerRef} className='w-full h-125 md:h-85 lg:h-128' />
+  return (
+    <div ref={chartContainerRef} className="w-full h-125 md:h-85 lg:h-128" />
+  )
 }
 
 export { CandleStickChart }

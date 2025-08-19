@@ -40,7 +40,6 @@ export const fetchDepth = createAsyncThunk<
   } catch (error: any) {
     dispatch(setError(error.message || 'Failed to fetch depth snapshot.'))
     throw error
-  } finally {
   }
 })
 

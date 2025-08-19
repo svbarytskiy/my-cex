@@ -27,7 +27,8 @@ const SortableColumnHeader: FC<SortableColumnHeaderProps> = memo(
       }
     }
 
-    const headerColumnClasses = 'flex items-center max-w-full overflow-hidden truncate'
+    const headerColumnClasses =
+      'flex items-center max-w-full overflow-hidden truncate'
 
     const headerContentClasses = clsx(
       'flex items-center pr-[2px] overflow-hidden',
@@ -74,7 +75,10 @@ const SortableColumnHeader: FC<SortableColumnHeaderProps> = memo(
           <div className={columnLabelClasses}>{label}</div>
           {sortable && (
             <div className="flex-shrink-0">
-              <SortDirectionIcon currentSortDirection={currentSortDirection} className='flex-shrink-0' />
+              <SortDirectionIcon
+                currentSortDirection={currentSortDirection}
+                className="flex-shrink-0"
+              />
             </div>
           )}
         </div>

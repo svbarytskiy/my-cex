@@ -3,10 +3,13 @@ import { NotFoundPage } from 'pages/notFound/NotFoundPage'
 import { ErrorPage } from 'pages/ErrorPage'
 import { TradePage } from 'pages/tradePage/TradePage'
 import { redirect, createBrowserRouter } from 'react-router-dom'
-import { selectAllSymbolsRecord, selectExchangeInfoLoading, selectSymbolInfo } from './store/slices/exchangeInfo/exchangeInfoSlice'
+import {
+  selectAllSymbolsRecord,
+  selectExchangeInfoLoading,
+  selectSymbolInfo,
+} from './store/slices/exchangeInfo/exchangeInfoSlice'
 import { fetchExchangeInfo } from './store/slices/exchangeInfo/exchangeInfoThunks'
 import { store } from './store/store'
-
 
 const SUPPORTED_LOCALES = ['en', 'uk', 'de']
 const DEFAULT_LOCALE = 'en'
@@ -80,14 +83,14 @@ export const tradePageLoader = async ({
   params: any
   request: Request
 }) => {
-  let locale = params.locale 
+  let locale = params.locale
   const urlSymbol: string = params.symbol
 
   if (!locale) {
     locale = getPreferredLocale()
-    const currentUrl = new URL(request.url) 
+    const currentUrl = new URL(request.url)
     const newPath = `/${locale}${currentUrl.pathname}${currentUrl.search}`
-    throw redirect(newPath) 
+    throw redirect(newPath)
   }
 
   if (!SUPPORTED_LOCALES.includes(locale)) {

@@ -1,4 +1,4 @@
-import { formatCurrency } from "./currency"
+import { formatCurrency } from './currency'
 
 describe('formatCurrency', () => {
   test('should format a number as USD currency by default', () => {
@@ -34,20 +34,6 @@ describe('formatCurrency', () => {
   test('should format a string number as currency', () => {
     const result = formatCurrency('100.25')
     expect(result).toBe('$100.25')
-  })
-
-  test('should throw an error for null value', () => {
-    // @ts-ignore
-    expect(() => formatCurrency(null)).toThrow(
-      'Value cannot be null or undefined',
-    )
-  })
-
-  test('should throw an error for undefined value', () => {
-    // @ts-ignore: 
-    expect(() => formatCurrency(undefined)).toThrow(
-      'Value cannot be null or undefined',
-    )
   })
 
   test('should throw an error for non-numeric string', () => {

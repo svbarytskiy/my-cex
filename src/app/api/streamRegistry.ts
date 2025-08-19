@@ -4,10 +4,7 @@ import { Depth } from 'app/store/slices/depth/types'
 
 import Trade from 'app/store/slices/lastTrades/types'
 import { addNewTrade } from 'app/store/slices/lastTrades/lastTradesSlice'
-import {
-  MiniTicker,
-  MiniTickerResponse,
-} from 'app/store/slices/miniTicker/types'
+import { MiniTicker } from 'app/store/slices/miniTicker/types'
 import { updateMiniTicker } from 'app/store/slices/miniTicker/miniTickerSlice'
 import { Time } from 'lightweight-charts'
 import { wsTickerUpdate } from 'app/store/slices/ticker/tickerSlice'
@@ -112,7 +109,7 @@ export const streamRegistry: {
         isBestMatch: msg.M,
       }
     },
-    reducerAction: ({ key, data }: { key: string; data: Trade }) =>
+    reducerAction: ({ data }: { key: string; data: Trade }) =>
       addNewTrade(data),
   },
 
@@ -166,7 +163,7 @@ export function registerStream<K extends keyof typeof streamRegistry>(
 
   return {
     stream: streamName,
-    onMessage: (data: any) => {
+    onMessage: (data: unknown) => {
       const parsed = handler.parseMessage(data)
       if (parsed) {
         store.dispatch(handler.reducerAction({ key, data: parsed }))

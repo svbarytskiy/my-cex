@@ -1,7 +1,7 @@
 export interface ProcessedOrder {
-  price: string;
-  quantity: string;
-  total: string;
+  price: string
+  quantity: string
+  total: string
 }
 
 export type OrderBookView = 'default' | 'bidsOnly' | 'asksOnly'

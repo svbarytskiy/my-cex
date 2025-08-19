@@ -3,7 +3,7 @@ interface FormatLargeNumberOptions {
   maximumFractionDigits?: number
   locale?: string
   signDisplay?: 'auto' | 'never' | 'always' | 'exceptZero'
-  defaultSmallNumberFractionDigits?: number;
+  defaultSmallNumberFractionDigits?: number
 }
 
 export function formatLargeNumber(
@@ -54,13 +54,13 @@ export function formatLargeNumber(
     if (options?.minimumFractionDigits !== undefined) {
       finalMinFractionDigits = options.minimumFractionDigits
     } else if (options?.defaultSmallNumberFractionDigits !== undefined) {
-      finalMinFractionDigits = options.defaultSmallNumberFractionDigits;
+      finalMinFractionDigits = options.defaultSmallNumberFractionDigits
     }
 
     if (options?.maximumFractionDigits !== undefined) {
       finalMaxFractionDigits = options.maximumFractionDigits
     } else if (options?.defaultSmallNumberFractionDigits !== undefined) {
-      finalMaxFractionDigits = options.defaultSmallNumberFractionDigits;
+      finalMaxFractionDigits = options.defaultSmallNumberFractionDigits
     }
   } else {
     formattedNum = numberValue / unit.value

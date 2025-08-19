@@ -74,12 +74,12 @@ const TradePage = () => {
                       </HorizontalScrollContainer>
 
                       <Card.Actions>
-                        <div className=""></div>
+                        <div className="" />
                       </Card.Actions>
                     </div>
                   </Card.Header>
                   <Card.Actions>
-                    <div className=""></div>
+                    <div className="" />
                   </Card.Actions>
                   <Card.Content>
                     {activeChartTab === 'chart' && <TradingView />}
@@ -121,7 +121,7 @@ const TradePage = () => {
                       </div>
                     </Card.Header>
                     <Card.Actions>
-                      <div className=""></div>
+                      <div className="" />
                     </Card.Actions>
                     <Card.Content>
                       {activeBookTab === 'order-book' && <OrderBook />}
@@ -141,7 +141,7 @@ const TradePage = () => {
                       </div>
                     </Card.Header>
                     <Card.Actions>
-                      <div className=""></div>
+                      <div className="" />
                     </Card.Actions>
                     <Card.Content>
                       <LastTrades />
@@ -159,7 +159,7 @@ const TradePage = () => {
                       </div>
                     </Card.Header>
                     <Card.Actions>
-                      <div className=""></div>
+                      <div className="" />
                     </Card.Actions>
                     <Card.Content>
                       <OrderBook />

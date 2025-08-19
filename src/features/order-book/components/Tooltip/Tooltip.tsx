@@ -22,7 +22,7 @@ export const Tooltip: FC<TooltipProps> = ({
 
   return (
     <div
-      className={`absolute top-0 bg-text-primary text-background-tertiary rounded-lg p-2 shadow-md z-50 h-18 w-45 text-xs mr-2`}
+      className="absolute top-0 bg-text-primary text-background-tertiary rounded-lg p-2 shadow-md z-50 h-18 w-45 text-xs mr-2"
       style={{
         transform: `translateY(${targetElement.top - 36}px)`,
         right: `calc(100% + 5px)`,

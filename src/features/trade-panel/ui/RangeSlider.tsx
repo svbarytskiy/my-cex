@@ -21,7 +21,7 @@ const TradingRangeSlider: FC = () => {
             style={{
               background: `linear-gradient(to right, var(--accent-primary) ${sliderValue}%, var(--border-color) ${sliderValue}%)`,
             }}
-          ></div>
+          />
 
           {breakpoints.map(breakpoint => (
             <div
@@ -39,7 +39,7 @@ const TradingRangeSlider: FC = () => {
                 transform: `translateX(-50%) translateY(-50%)`,
                 top: '50%',
               }}
-            ></div>
+            />
           ))}
         </div>
         <input

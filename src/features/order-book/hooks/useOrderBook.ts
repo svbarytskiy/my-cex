@@ -74,12 +74,12 @@ export const useOrderBook = (precision: number) => {
   const processedAsks = useMemo(() => processOrders(asks), [asks])
 
   const totalBidVolume = useMemo(
-    () => bids.reduce((acc, [_, quantity]) => acc + parseFloat(quantity), 0),
+    () => bids.reduce((acc, [, quantity]) => acc + parseFloat(quantity), 0),
     [bids],
   )
 
   const totalAskVolume = useMemo(
-    () => asks.reduce((acc, [_, quantity]) => acc + parseFloat(quantity), 0),
+    () => asks.reduce((acc, [, quantity]) => acc + parseFloat(quantity), 0),
     [asks],
   )
 

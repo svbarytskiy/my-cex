@@ -9,10 +9,9 @@ interface SeparatorColumnWrapperProps {
 export const SeparatorColumnWrapper: FC<SeparatorColumnWrapperProps> = memo(
   ({ children, className }) => {
     const childrenArray = Children.toArray(children)
-    const baseGroupClasses =
-      'flex items-center'
+    const baseGroupClasses = 'flex items-center'
 
-    const separatorClasses = 'text-[#999999] text-xs mx-1 flex-shrink-0' 
+    const separatorClasses = 'text-[#999999] text-xs mx-1 flex-shrink-0'
 
     if (childrenArray.length < 2) {
       return <div className={clsx(baseGroupClasses, className)}>{children}</div>
@@ -20,7 +19,6 @@ export const SeparatorColumnWrapper: FC<SeparatorColumnWrapperProps> = memo(
 
     return (
       <div className={clsx(baseGroupClasses, className)}>
-
         {childrenArray.map((child, index) => (
           <div key={index} className="flex items-center max-w-full truncate">
             {child}

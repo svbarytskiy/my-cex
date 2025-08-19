@@ -27,5 +27,5 @@ export interface SymbolInfo {
 export interface ExchangeInfoResponse {
   timezone: string
   serverTime: number
-  symbols: SymbolInfo[] 
+  symbols: SymbolInfo[]
 }

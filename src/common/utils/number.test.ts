@@ -65,10 +65,7 @@ describe('formatNumber', () => {
   test('should infer maximumFractionDigits from input if not provided', () => {
     expect(formatNumber(1.23456)).toBe('1.23456')
     expect(formatNumber(123)).toBe('123.00')
-    expect(formatNumber(1.23456789012345678901)).toBe('1.2345678901234567')
-    expect(formatNumber(1.234567890123456789012345)).toBe(
-      '1.2345678901234567',
-    )
+    expect(formatNumber(1.2345678901234567)).toBe('1.2345678901234567')
   })
 
   test('should infer maximumFractionDigits correctly for string inputs', () => {

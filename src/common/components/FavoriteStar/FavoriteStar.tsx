@@ -1,11 +1,11 @@
-import { FC, memo } from 'react';
-import clsx from 'clsx';
+import { FC, memo } from 'react'
+import clsx from 'clsx'
 
 interface FavoriteStarProps {
-  isActive: boolean;
-  onClick: () => void;
-  hasBorder?: boolean;
-  className?: string;
+  isActive: boolean
+  onClick: () => void
+  hasBorder?: boolean
+  className?: string
 }
 
 const FavoriteStar: FC<FavoriteStarProps> = memo(
@@ -16,12 +16,12 @@ const FavoriteStar: FC<FavoriteStarProps> = memo(
           'flex items-center justify-center',
           'bg-transparent',
           'border',
-          'border-border-color', 
-          'cursor-pointer', 
+          'border-border-color',
+          'cursor-pointer',
           'text-border-color',
           'w-6 h-6',
-          'rounded-[25%]', 
-          'box-border', 
+          'rounded-[25%]',
+          'box-border',
           'transition-colors',
           isActive && ' text-accent-primary',
           !hasBorder && 'border-none',
@@ -43,13 +43,13 @@ const FavoriteStar: FC<FavoriteStarProps> = memo(
           width="12px"
           height="12px"
         >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       </button>
-    );
+    )
   },
-);
+)
 
-FavoriteStar.displayName = 'FavoriteStar';
+FavoriteStar.displayName = 'FavoriteStar'
 
-export { FavoriteStar };
+export { FavoriteStar }

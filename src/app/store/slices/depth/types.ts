@@ -47,8 +47,8 @@ export interface DepthEvent {
 }
 
 export type ProcessedDepthData = {
-  bids: DepthLevel[];
-  asks: DepthLevel[];
-  lastUpdateId: number;
-  resyncNeeded?: boolean;
-};
+  bids: DepthLevel[]
+  asks: DepthLevel[]
+  lastUpdateId: number
+  resyncNeeded?: boolean
+}

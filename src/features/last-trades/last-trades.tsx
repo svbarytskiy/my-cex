@@ -30,8 +30,8 @@ export const LastTrades: React.FC = () => {
   const tickSize = useAppSelector(state =>
     selectTickSizeBySymbol(state, symbol),
   )
-  let basePriceCount = getPrecisionFromMinPrice(Number(minQty))
-  let quotePriceCount = getPrecisionFromMinPrice(Number(tickSize))
+  const basePriceCount = getPrecisionFromMinPrice(Number(minQty))
+  const quotePriceCount = getPrecisionFromMinPrice(Number(tickSize))
   useEffect(() => {
     dispatch(fetchInitialTrades(symbol))
     dispatch(subscribeLastTradesWS({ symbol }))

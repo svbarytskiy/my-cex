@@ -27,8 +27,15 @@ export class WebSocketClient {
 
     this.socket.onclose = () => {
       this.isConnected = false
-      console.warn('[WS] Disconnected — reconnect in', this.reconnectTimeout, 'ms')
-      this.reconnectTimer = setTimeout(() => this.connect(), this.reconnectTimeout)
+      console.warn(
+        '[WS] Disconnected — reconnect in',
+        this.reconnectTimeout,
+        'ms',
+      )
+      this.reconnectTimer = setTimeout(
+        () => this.connect(),
+        this.reconnectTimeout,
+      )
     }
 
     this.socket.onerror = err => {
@@ -66,7 +73,7 @@ export class WebSocketClient {
     if (msg.result !== undefined && msg.id !== undefined) return
 
     let streamKey: string
-    let data: any
+    let data: unknown
 
     if (msg.stream && msg.data) {
       streamKey = msg.stream

@@ -30,7 +30,7 @@ export const ChartHeader: FC<ChartHeaderProps> = ({
           activeInterval={activeInterval}
           onIntervalChange={onIntervalChange}
         />
-        <div className="text-xs text-text-secondary ml-auto md:w-auto flex items-center" >
+        <div className="text-xs text-text-secondary ml-auto md:w-auto flex items-center">
           <div className="flex relative bg-background-tertiary rounded-md items-center justify-between md:justify-start">
             {Object.entries(views).map(([key, label]) => (
               <div

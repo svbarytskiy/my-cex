@@ -33,7 +33,7 @@ const TickerListHeader: FC<TickerListHeaderProps> = ({
   currentSortDirection,
 }) => {
   return (
-    <div >
+    <div>
       <div className="px-4 border-b border-border-color">
         <HorizontalScrollContainer scrollAmount={150} scrollToId={activeTab.id}>
           {TABS.map(tab => (

@@ -19,7 +19,7 @@ export const BidsOnlyOrderBook: FC<BidsOnlyOrderBookProps> = ({
   bids,
   minQty,
   quotePriceCount,
-  isMobile
+  isMobile,
 }) => {
   const bidsSlice = bids.slice(0, 40)
   const containerRef = useRef<HTMLDivElement>(null)

@@ -55,7 +55,7 @@ const miniTickerSlice = createSlice({
           })
         },
       )
-      .addCase(fetchInitialMiniTickers.rejected, (state, action) => {
+      .addCase(fetchInitialMiniTickers.rejected, state => {
         state.loading = false
       })
   },
