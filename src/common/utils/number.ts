@@ -18,20 +18,22 @@ export function formatNumber(
   const parsed = Number(number)
 
   if (isNaN(parsed)) return String(number)
-  let actualMaximumFractionDigits = options.maximumFractionDigits;
+  let actualMaximumFractionDigits = options.maximumFractionDigits
 
   if (actualMaximumFractionDigits === undefined) {
-    const numString = parsed.toString();
-    const decimalIndex = numString.indexOf('.');
+    const numString = parsed.toString()
+    const decimalIndex = numString.indexOf('.')
     if (decimalIndex !== -1) {
-      actualMaximumFractionDigits = numString.length - 1 - decimalIndex;
+      actualMaximumFractionDigits = numString.length - 1 - decimalIndex
     } else {
-      actualMaximumFractionDigits = 0; 
+      actualMaximumFractionDigits = 0
     }
-    actualMaximumFractionDigits = Math.max(actualMaximumFractionDigits, minimumFractionDigits);
-    actualMaximumFractionDigits = Math.min(actualMaximumFractionDigits, 20); 
+    actualMaximumFractionDigits = Math.max(
+      actualMaximumFractionDigits,
+      minimumFractionDigits,
+    )
+    actualMaximumFractionDigits = Math.min(actualMaximumFractionDigits, 20)
   }
-
 
   return parsed.toLocaleString(locale, {
     minimumFractionDigits,

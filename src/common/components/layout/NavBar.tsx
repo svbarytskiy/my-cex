@@ -30,7 +30,7 @@ export const Navbar = () => {
           EXBIT
         </Link>
 
-        <nav className='ml-5'>
+        <nav className="ml-5">
           <ul
             className="
             flex         

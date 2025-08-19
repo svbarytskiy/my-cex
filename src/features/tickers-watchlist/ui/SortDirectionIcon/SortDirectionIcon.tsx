@@ -1,7 +1,6 @@
 import { SortDirection } from '../../types/model'
 import { FC, memo } from 'react'
 
-
 interface SortDirectionIconProps {
   currentSortDirection: SortDirection
   className?: string

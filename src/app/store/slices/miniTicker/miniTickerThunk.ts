@@ -31,7 +31,7 @@ export const fetchInitialMiniTickers = createAsyncThunk<
     dispatch(setError(null))
     return transformedData
   } catch (error: any) {
-    let errorMessage = 'Unknown error while fetching mini tickers' + error
+    const errorMessage = 'Unknown error while fetching mini tickers' + error
     dispatch(setError(errorMessage))
     return rejectWithValue(errorMessage)
   } finally {

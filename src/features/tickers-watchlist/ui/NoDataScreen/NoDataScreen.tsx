@@ -11,10 +11,12 @@ interface NoDataScreenProps {
 const NoDataScreen: FC<NoDataScreenProps> = ({
   message = 'No data available.',
   iconSize = 90,
-  color = '#888', 
+  color = '#888',
   className,
 }) => {
-  const textColorClass = color.startsWith('#') ? `text-[${color}]` : `text-${color}`;
+  const textColorClass = color.startsWith('#')
+    ? `text-[${color}]`
+    : `text-${color}`
 
   return (
     <div

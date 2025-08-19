@@ -69,7 +69,7 @@ const TradePanel: FC = () => {
               </Tabs.Header>
             </Tabs>
             <Card.Actions>
-              <div className=""></div>
+              <div className="" />
             </Card.Actions>
           </div>
         </Card.Header>

@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { RootState } from 'store/store'
 import { SymbolFilter } from '../exchangeInfo/types'
 import { TAB_FILTER_RULES } from './filterRules'
 import {
@@ -8,6 +7,7 @@ import {
 } from '../exchangeInfo/exchangeInfoSlice'
 import { selectFavoritePairSymbols } from '../pairSettings/pairSettings.slice'
 import { selectMiniTickers, selectMiniTickersLoading } from './miniTickerSlice'
+import { RootState } from 'app/store/store'
 
 export interface AggregatedTradePair {
   id: string
@@ -82,30 +82,28 @@ export const selectFilteredAndSortedTradingPairs = createSelector(
     selectAggregatedTradingPairs,
     selectMiniTickersLoading,
     selectExchangeInfoLoading,
-    (_: RootState, searchTerm: string, ...rest: any[]) => searchTerm,
-    (_: RootState, searchTerm: string, activeTabId: string, ...rest: any[]) =>
+    (_: RootState, searchTerm: string) => searchTerm,
+    (_: RootState, _searchTerm: string, activeTabId: string) =>
       activeTabId,
     (
       _: RootState,
-      searchTerm: string,
-      activeTabId: string,
+      _searchTerm: string,
+      _activeTabId: string,
       activeSubTabId: string | null,
-      ...rest: any[]
     ) => activeSubTabId,
     (
       _: RootState,
-      searchTerm: string,
-      activeTabId: string,
-      activeSubTabId: string | null,
+      _searchTerm: string,
+      _activeTabId: string,
+      _activeSubTabId: string | null,
       sortColumn: string | null,
-      ...rest: any[]
     ) => sortColumn,
     (
       _: RootState,
-      searchTerm: string,
-      activeTabId: string,
-      activeSubTabId: string | null,
-      sortColumn: string | null,
+      _searchTerm: string,
+      _activeTabId: string,
+      _activeSubTabId: string | null,
+      _sortColumn: string | null,
       sortDirection: 'asc' | 'desc' | null,
     ) => sortDirection,
   ],
@@ -127,12 +125,15 @@ export const selectFilteredAndSortedTradingPairs = createSelector(
 
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase()
+      // eslint-disable-next-line no-useless-escape
       const normalizedSearchTerm = lowerCaseSearchTerm.replace(/[\/\s]/g, '')
 
       filteredPairs = filteredPairs.filter(p => {
+        // eslint-disable-next-line no-useless-escape
         const normalizedPairId = p.id.toLowerCase().replace(/[\/\s]/g, '')
         const normalizedFormattedSymbol = p.symbol
           .toLowerCase()
+          // eslint-disable-next-line no-useless-escape
           .replace(/[\/\s]/g, '')
 
         return (

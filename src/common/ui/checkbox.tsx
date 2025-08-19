@@ -2,7 +2,9 @@ import { Check } from 'lucide-react'
 import { InputHTMLAttributes, forwardRef } from 'react'
 import { cn } from 'common/utils/cn'
 
-export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {}
+export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+  color?: string
+}
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, ...props }, ref) => {

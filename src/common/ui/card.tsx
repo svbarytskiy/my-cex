@@ -61,9 +61,7 @@ const Card: FC<CardProps> & {
   const hasHeaderOrActions = headerContent || actionsContent
 
   return (
-    <div
-      className={`bg-background-secondary shadow-md ${className || ''}`}
-    >
+    <div className={`bg-background-secondary shadow-md ${className || ''}`}>
       {hasHeaderOrActions && (
         <div className="relative flex items-center justify-between border-b border-border-color">
           {headerContent}

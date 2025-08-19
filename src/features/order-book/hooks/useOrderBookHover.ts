@@ -1,7 +1,6 @@
 import { useState, RefObject } from 'react'
 import { HoverInfo, Order, AggregatedData } from '../types'
 
-
 export const useOrderBookHover = (
   containerRef: RefObject<HTMLElement | null>,
 ) => {

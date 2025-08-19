@@ -45,12 +45,12 @@ const OrderList: FC = () => {
               </Tabs.Header>
             </Tabs>
             <Card.Actions>
-              <div className=""></div>
+              <div className="" />
             </Card.Actions>
           </div>
         </Card.Header>
         <Card.Actions>
-          <div className=""></div>
+          <div className="" />
         </Card.Actions>
         <Card.Content>
           <div className="text-base text-accent-primary font-semibold h-90 w-full flex justify-center items-center">

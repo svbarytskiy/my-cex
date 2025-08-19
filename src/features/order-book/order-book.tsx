@@ -69,8 +69,8 @@ const OrderBook: FC = () => {
     )
 
   const minQty = useAppSelector(state => selectMinQtyBySymbol(state, symbol))!
-  let basePriceCount = getPrecisionFromMinPrice(Number(minQty))
-  let quotePriceCount = getPrecisionFromMinPrice(Number(tickSize))
+  const basePriceCount = getPrecisionFromMinPrice(Number(minQty))
+  const quotePriceCount = getPrecisionFromMinPrice(Number(tickSize))
   const { isMobile } = useDeviceType()
   if (error) {
     return (

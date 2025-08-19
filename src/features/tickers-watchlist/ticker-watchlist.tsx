@@ -13,7 +13,7 @@ import { logError } from 'common/utils/logError'
 import { fetchExchangeInfo } from 'app/store/slices/exchangeInfo/exchangeInfoThunks'
 import { useAppSelector, useAppDispatch } from 'app/store/store'
 
-const TickersWatchList: FC = ({}) => {
+const TickersWatchList: FC = () => {
   const { data } = useAppSelector(state => state.exchangeInfo)
   const { miniTickers, wsConnected } = useAppSelector(state => state.miniTicker)
   const dispatch = useAppDispatch()

@@ -2,9 +2,9 @@
 // import { DrawingIcon } from '../../icons/DrawingIcon'
 // import { IndicatorIcon } from '../../icons/IndicatorIcon'
 // import { PlusIcon } from '../../icons/PlusIcon'
-import { KlineInterval } from '../../../../binance/types/kline'
 import { FC } from 'react'
 import clsx from 'clsx'
+import { KlineInterval } from 'app/store/slices/candles/types'
 
 const timeIntervals = [
   '1s',
@@ -42,7 +42,8 @@ export const Toolbar: FC<TradingToolbarProps> = ({
                 'hover:text-text-primary',
                 {
                   'text-text-secondary': activeInterval !== interval,
-                  'text-text-primary font-semibold': activeInterval === interval,
+                  'text-text-primary font-semibold':
+                    activeInterval === interval,
                 },
               )}
             >

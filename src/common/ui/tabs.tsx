@@ -6,69 +6,85 @@ import React, {
   ReactNode,
   useEffect,
   isValidElement,
-} from 'react';
+} from 'react'
 
 interface TabsContextType {
-  activeId: string;
-  setActiveId: (id: string) => void;
-  allTabIds: string[];
+  activeId: string
+  setActiveId: (id: string) => void
+  allTabIds: string[]
 }
 
-const TabsContext = createContext<TabsContextType | undefined>(undefined);
+const TabsContext = createContext<TabsContextType | undefined>(undefined)
 
 const useTabsContext = () => {
-  const context = useContext(TabsContext);
+  const context = useContext(TabsContext)
   if (!context) {
-    throw new Error('Tabs compound components (Tabs.Header, Tabs.Trigger, Tabs.Content) must be rendered as children of the <Tabs> component.');
+    throw new Error(
+      'Tabs compound components (Tabs.Header, Tabs.Trigger, Tabs.Content) must be rendered as children of the <Tabs> component.',
+    )
   }
-  return context;
-};
+  return context
+}
 
 interface TabsComponent extends FC<TabsProps> {
-  Header: FC<TabsHeaderProps>;
-  Trigger: FC<TabsTriggerProps>;
-  Content: FC<TabsContentProps>;
+  Header: FC<TabsHeaderProps>
+  Trigger: FC<TabsTriggerProps>
+  Content: FC<TabsContentProps>
 }
 
 interface TabsProps {
-  children: ReactNode;
-  defaultActiveId?: string;
-  className?: string;
+  children: ReactNode
+  defaultActiveId?: string
+  className?: string
 }
 
-export const Tabs: TabsComponent = ({ children, defaultActiveId, className }) => {
-  const allTabIds: string[] = [];
+export const Tabs: TabsComponent = ({
+  children,
+  defaultActiveId,
+  className,
+}) => {
+  const allTabIds: string[] = []
 
-  let tabsHeader: ReactNode | undefined;
-  let tabsContent: ReactNode | undefined;
+  let tabsHeader: ReactNode | undefined
+  let tabsContent: ReactNode | undefined
 
   React.Children.forEach(children, child => {
-    if (isValidElement(child)) { 
+    if (isValidElement(child)) {
       if (child.type === TabsHeader) {
-        tabsHeader = child;
-        React.Children.forEach((child.props as TabsHeaderProps).children, headerChild => {
-          if (isValidElement(headerChild) && headerChild.type === TabsTrigger) {
-            allTabIds.push((headerChild.props as TabsTriggerProps).value);
-          }
-        });
+        tabsHeader = child
+        React.Children.forEach(
+          (child.props as TabsHeaderProps).children,
+          headerChild => {
+            if (
+              isValidElement(headerChild) &&
+              headerChild.type === TabsTrigger
+            ) {
+              allTabIds.push((headerChild.props as TabsTriggerProps).value)
+            }
+          },
+        )
       } else if (child.type === TabsContent) {
-        tabsContent = child;
+        tabsContent = child
       }
     }
-  });
+  })
 
-  const initialActiveId = (defaultActiveId && allTabIds.includes(defaultActiveId))
-    ? defaultActiveId
-    : allTabIds[0] || '';
+  const initialActiveId =
+    defaultActiveId && allTabIds.includes(defaultActiveId)
+      ? defaultActiveId
+      : allTabIds[0] || ''
 
-  const [activeId, setActiveId] = useState<string>(initialActiveId);
+  const [activeId, setActiveId] = useState<string>(initialActiveId)
 
   useEffect(() => {
-    if (defaultActiveId && allTabIds.includes(defaultActiveId) && activeId !== defaultActiveId) {
-      setActiveId(defaultActiveId);
+    if (
+      defaultActiveId &&
+      allTabIds.includes(defaultActiveId) &&
+      activeId !== defaultActiveId
+    ) {
+      setActiveId(defaultActiveId)
     }
-  }, [defaultActiveId, allTabIds, activeId]);
-
+  }, [defaultActiveId, allTabIds, activeId])
 
   return (
     <TabsContext.Provider value={{ activeId, setActiveId, allTabIds }}>
@@ -77,35 +93,38 @@ export const Tabs: TabsComponent = ({ children, defaultActiveId, className }) =>
         {tabsContent}
       </div>
     </TabsContext.Provider>
-  );
-};
+  )
+}
 
 interface TabsHeaderProps {
-  children: ReactNode;
-  className?: string;
+  children: ReactNode
+  className?: string
 }
 
 const TabsHeader: FC<TabsHeaderProps> = ({ children, className }) => (
-  <div className={`flex ${className || ''}`}>
-    {children}
-  </div>
-);
+  <div className={`flex ${className || ''}`}>{children}</div>
+)
 
 interface TabsTriggerProps {
-  value: string;
-  label: string;
-  onClick?: () => void;
-  className?: string;
+  value: string
+  label: string
+  onClick?: () => void
+  className?: string
 }
 
-const TabsTrigger: FC<TabsTriggerProps> = ({ value, label, onClick, className }) => {
-  const { activeId, setActiveId } = useTabsContext();
-  const isActive = activeId === value;
+const TabsTrigger: FC<TabsTriggerProps> = ({
+  value,
+  label,
+  onClick,
+  className,
+}) => {
+  const { activeId, setActiveId } = useTabsContext()
+  const isActive = activeId === value
 
   const handleClick = () => {
-    setActiveId(value);
-    onClick?.();
-  };
+    setActiveId(value)
+    onClick?.()
+  }
 
   return (
     <button
@@ -119,34 +138,30 @@ const TabsTrigger: FC<TabsTriggerProps> = ({ value, label, onClick, className })
     >
       {label}
       {isActive && (
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-primary"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-primary" />
       )}
     </button>
-  );
-};
+  )
+}
 
 interface TabsContentProps {
-  id: string;
-  children: ReactNode;
-  className?: string;
+  id: string
+  children: ReactNode
+  className?: string
 }
 
 const TabsContent: FC<TabsContentProps> = ({ id, children, className }) => {
-  const { activeId } = useTabsContext();
+  const { activeId } = useTabsContext()
 
   if (activeId !== id) {
-    return null;
+    return null
   }
 
-  return (
-    <div className={`flex gap-2 ${className || ''}`}>
-      {children}
-    </div>
-  );
-};
+  return <div className={`flex gap-2 ${className || ''}`}>{children}</div>
+}
 
-Tabs.Header = TabsHeader;
-Tabs.Trigger = TabsTrigger;
-Tabs.Content = TabsContent;
+Tabs.Header = TabsHeader
+Tabs.Trigger = TabsTrigger
+Tabs.Content = TabsContent
 
-export type { TabsProps, TabsHeaderProps, TabsTriggerProps, TabsContentProps };
+export type { TabsProps, TabsHeaderProps, TabsTriggerProps, TabsContentProps }

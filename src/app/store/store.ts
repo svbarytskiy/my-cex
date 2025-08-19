@@ -82,10 +82,7 @@ const staticReducers = {
     tickerWatchlistPersistConfig,
     tickerWatchlistReducer,
   ),
-  orderBook: persistReducer(
-    OrderBookPersistConfig,
-    OrderBookReducer,
-  ),
+  orderBook: persistReducer(OrderBookPersistConfig, OrderBookReducer),
 }
 
 const asyncReducers: Record<string, Reducer> = {}

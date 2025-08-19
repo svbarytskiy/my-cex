@@ -40,40 +40,36 @@ export const OrderBookSettingsForm: FC = () => {
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs font-medium text-text-secondary">Total Column Currency</p>
+        <p className="text-xs font-medium text-text-secondary">
+          Total Column Currency
+        </p>
         <RadioGroup>
-          {TOTAL_COLUMN_CURRENCY_OPTIONS.map(
-            (
-              { value, label },
-            ) => (
-              <RadioGroupItem
-                key={value}
-                label={label}
-                value={value}
-                checked={totalColumnCurrency === value}
-                onChange={() => dispatch(setTotalColumnCurrency(value))}
-              />
-            ),
-          )}
+          {TOTAL_COLUMN_CURRENCY_OPTIONS.map(({ value, label }) => (
+            <RadioGroupItem
+              key={value}
+              label={label}
+              value={value}
+              checked={totalColumnCurrency === value}
+              onChange={() => dispatch(setTotalColumnCurrency(value))}
+            />
+          ))}
         </RadioGroup>
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs font-medium  text-text-secondary">Total Column Type</p>
+        <p className="text-xs font-medium  text-text-secondary">
+          Total Column Type
+        </p>
         <RadioGroup>
-          {TOTAL_COLUMN_TYPE_OPTIONS.map(
-            (
-              { value, label }, 
-            ) => (
-              <RadioGroupItem
-                key={value}
-                label={label}
-                value={value}
-                checked={totalColumnType === value}
-                onChange={() => dispatch(setTotalColumnType(value))}
-              />
-            ),
-          )}
+          {TOTAL_COLUMN_TYPE_OPTIONS.map(({ value, label }) => (
+            <RadioGroupItem
+              key={value}
+              label={label}
+              value={value}
+              checked={totalColumnType === value}
+              onChange={() => dispatch(setTotalColumnType(value))}
+            />
+          ))}
         </RadioGroup>
       </div>
     </form>

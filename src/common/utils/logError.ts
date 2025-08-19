@@ -1,9 +1,9 @@
 import { ErrorInfo } from 'react'
 
 interface LogErrorOptions {
-  message?: string 
-  details?: string 
-  context?: Record<string, any> 
+  message?: string
+  details?: string
+  context?: Record<string, any>
 }
 
 function logError(

@@ -50,7 +50,7 @@ const SortableTableHeader: FC<SortableTableHeaderProps> = memo(
     const change24hColumnDef = COLUMNS_DEFINITIONS.change24h
 
     return (
-      <div className='w-full flex items-center text-text-secondary text-xs h-8 px-4'>
+      <div className="w-full flex items-center text-text-secondary text-xs h-8 px-4">
         <SeparatorColumnWrapper className="flex-[5_1_0] truncate max-w-[70%] min-w-[122px] justify-start pr-[12px]">
           <SortableColumnHeader
             id={pairColumnDef.id}

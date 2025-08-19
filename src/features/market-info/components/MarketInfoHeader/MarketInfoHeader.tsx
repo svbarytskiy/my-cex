@@ -44,7 +44,7 @@ const MarketInfoHeader: FC<MarketInfoHeaderProps> = ({
   const handleCloseTickersWatchList = useCallback(() => {
     setIsDropdownOpen(false)
   }, [])
-  const { isMobile, isTablet, isDesktop } = useDeviceType()
+  const { isMobile } = useDeviceType()
 
   return (
     <div className=" flex flex-col md:flex-row">
