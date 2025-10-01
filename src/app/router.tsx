@@ -162,7 +162,7 @@ export const tradePageLoader = async ({
   }
 }
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
