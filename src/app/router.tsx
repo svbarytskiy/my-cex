@@ -2,7 +2,7 @@ import { Layout } from 'common/components/layout/Layout'
 import { NotFoundPage } from 'pages/notFound/NotFoundPage'
 import { ErrorPage } from 'pages/ErrorPage'
 import { TradePage } from 'pages/tradePage/TradePage'
-import { redirect, createBrowserRouter } from 'react-router-dom'
+import { redirect, createHashRouter } from 'react-router-dom'
 import {
   selectAllSymbolsRecord,
   selectExchangeInfoLoading,
